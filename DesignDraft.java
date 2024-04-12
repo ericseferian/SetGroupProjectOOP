@@ -1,12 +1,13 @@
+import java.util.ArrayList;
 
 public class DesignDraft {
 
     //currently just prints the deck of cards
     public static void main(String[] args) {
 
-        Card[] deck = Card.makeDeck();
+        ArrayList aNewDeckOfCards = Card.makeDeck();
 
-        for ( Card card : deck)
+        for ( Object card : aNewDeckOfCards)
         {
             System.out.println(card.toString());
 

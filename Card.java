@@ -1,4 +1,4 @@
-import java.awt.*;
+import java.util.ArrayList;
 
 public class Card {
 //Color, number, shape, and shading each have three possibilities.
@@ -35,10 +35,12 @@ public Card(ColorEnum cardColor,
 
 }
 //fill the deckOfCards array with objects of type card.
-    //
 
-    public static Card[] makeDeck() {
-        Card[] deckOfCards = new Card[81];
+
+    public static ArrayList<Card> makeDeck() {
+//        Card[] deckOfCards = new Card[81];
+        ArrayList<Card> deckOfCards = new ArrayList<Card>(TOTAL_CARDS);
+
         int index = 0;
 
         // Iterate through all possible combinations of attributes
@@ -47,7 +49,7 @@ public Card(ColorEnum cardColor,
                 for (ShapeEnum shape : ShapeEnum.values()) {
                     for (ShadingEnum shading : ShadingEnum.values()) {
                         // Create a new card with the current combination of attributes
-                        deckOfCards[index] = new Card(color, number, shape, shading);
+                        deckOfCards.add(index, new Card(color, number, shape, shading));
                         index++;
                     }
                 }

@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81419f05-2002-493c-ae3d-91fbfe53357f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Card.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/Card.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DesignDraft.java" beforeDir="false" afterPath="$PROJECT_DIR$/DesignDraft.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -47,10 +47,11 @@
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Application.DesignDraft.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "Card-Class",
+    "git-widget-placeholder": "Dealer",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/Ric/Documents/GitHub/GroupProjectOOP",
     "node.js.detected.package.eslint": "true",
@@ -78,7 +79,8 @@
       <updated>1710233470307</updated>
       <workItem from="1710233471452" duration="120000" />
       <workItem from="1711189784345" duration="609000" />
-      <workItem from="1712823060619" duration="3772000" />
+      <workItem from="1712823060619" duration="5972000" />
+      <workItem from="1712903817894" duration="2159000" />
     </task>
     <servers />
   </component>
