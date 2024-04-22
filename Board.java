@@ -6,28 +6,48 @@
 
 public class Board {
 
-private Card[][] board;
+    private Card[][] board;
 
-//not final because more cards may need to be added as columns
-private int boardWidth;
+    //not final because more cards may need to be added as columns
+    private int boardWidth;
 
-private final int BOARD_HEIGHT = 3;
+    private final int BOARD_HEIGHT = 3;
 
-public Board(){
-    this.board = new Card[boardWidth][BOARD_HEIGHT];
-
-}
-
-public void initializeBoard(){
-
-
-    }
-public void printBoard(){
-
-
+    public Board() {
+        this.board = new Card[boardWidth][BOARD_HEIGHT];
 
     }
 
+
+    //must be all the same or all different.
+    public boolean confirmSet(Card card1, Card card2, Card card3) {
+        if (
+                (!card1.color.equals(card2.color) && !card1.color.equals(card3.color) && !card2.color.equals(card3.color))
+                && ((!card1.number.equals(card2.number) && !card1.number.equals(card3.number) && !card2.number.equals(card3.number))
+                && ((!card1.shape.equals(card2.shape) && !card1.shape.equals(card3.shape) && !card2.shape.equals(card3.shape))
+                && ((!card1.shading.equals(card2.shading) && !card1.shading.equals(card3.shading) && !card2.shading.equals(card3.shading)))))
+        ) {
+            return true;
+        } else if ((card1.color.equals(card2.color) && card1.color.equals(card3.color) )
+                && ((card1.number.equals(card2.number) && card1.number.equals(card3.number) )
+                && ((card1.shape.equals(card2.shape) && card1.shape.equals(card3.shape) )
+                && ((card1.shading.equals(card2.shading) && card1.shading.equals(card3.shading)))))) {
+            return true;
+
+        } else
+    return false;
+
+    }
+
+    public void initializeBoard() {
+
+
+    }
+
+    public void printBoard() {
+
+
+    }
 
 
 }
