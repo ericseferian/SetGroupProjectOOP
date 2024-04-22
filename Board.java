@@ -36,7 +36,14 @@ public class Board {
 
         } else
     return false;
+    }
 
+
+    //choose three cards from the game as a possible set.
+    public Card[] pickSet(){
+Card[] possibleSet = new Card[3];
+
+return possibleSet;
     }
 
     public void initializeBoard() {
