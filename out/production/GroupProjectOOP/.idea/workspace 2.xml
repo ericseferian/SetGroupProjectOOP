@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="81419f05-2002-493c-ae3d-91fbfe53357f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/out/production/GroupProjectOOP/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GroupProjectOOP/Brainstorming.rtf" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GroupProjectOOP/Brainstorming.rtf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GroupProjectOOP/Dealer.class" beforeDir="false" />
-    </list>
+    <list default="true" id="81419f05-2002-493c-ae3d-91fbfe53357f" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -49,11 +45,10 @@
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Application.DesignDraft.executor": "Run",
-    "Application.Game.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Dealer",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/Ric/Documents/GitHub/GroupProjectOOP",
     "node.js.detected.package.eslint": "true",
@@ -83,7 +78,6 @@
       <workItem from="1711189784345" duration="609000" />
       <workItem from="1712823060619" duration="5972000" />
       <workItem from="1712903817894" duration="5806000" />
-      <workItem from="1712946966556" duration="242000" />
     </task>
     <servers />
   </component>
