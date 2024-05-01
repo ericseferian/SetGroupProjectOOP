@@ -1,6 +1,6 @@
 public class Player {
 
-    private int score;
+    private int score = 0;
     private String name;
 
 
@@ -10,6 +10,15 @@ public class Player {
 
     private void addScore(){
         this.score += 1;
+    }
+
+    private void decreaseScore(){
+        this.score -= 1;
+    }
+
+
+    public int getScore(){
+        return this.score;
     }
 
 }
