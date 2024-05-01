@@ -22,10 +22,10 @@ public class Card {
     public ShadingEnum shading;
 
     private static final int TOTAL_CARDS = 81;
-    
-    
+
+
     ///////////////////////////
-    
+
     public static final String imageLocation = "C:\\Location\\Of\\The\\Images\\"; //FILL THIS. This is the location of the images of the cards.
     //For example, if you put the images I provided into a folder called "Cards" on your Desktop, your Path should look like this: "C:\\Users\\YourUsername\\Desktop\\Cards\\"
 
@@ -53,7 +53,7 @@ public class Card {
     public Card(ColorEnum cardColor,
                 NumberEnum cardNumber,
                 ShapeEnum cardShape,
-                ShadingEnum cardShading){
+                ShadingEnum cardShading) {
         this.color = cardColor;
         this.number = cardNumber;
         this.shape = cardShape;
@@ -82,7 +82,7 @@ public class Card {
     }
 
 
-    public String imagePath(){
+    public String imagePath() {
         String colorString;
         String numberString;
         String shapeString;
@@ -177,6 +177,7 @@ public class Card {
 
         return
                 "Color: " + colorString.repeat(color.ordinal() + 1) + "\n" +
+                "Number: " + number + "\n" +
                 "Shape: " + shape + "\n" +
                 "Shading: " + shading + "\n";
     }
