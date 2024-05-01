@@ -17,6 +17,7 @@ public class Board {
         this.board = new Card[boardWidth][BOARD_HEIGHT];
 
     }
+    
 
 
     //must be all the same or all different.
