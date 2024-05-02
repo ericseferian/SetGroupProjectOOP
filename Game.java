@@ -9,7 +9,7 @@ import java.util.Collections;
 
 public class Game {
 
-    private Board b;
+    private Board board;
 
     //window properties
     static JFrame window;
@@ -52,6 +52,8 @@ public class Game {
     private static ArrayList<Card> deck;
 
     public Game() {
+
+        this.board = new Board();
 
         //create UI window
         window = new JFrame();
@@ -272,7 +274,7 @@ public class Game {
 
     }
 
-    public static void createEasyGame() {
+    public  void createEasyGame() {
 
         isEasy = true;
         isMedium = false;
@@ -544,7 +546,7 @@ public class Game {
         }
     }
 
-    public static class EasyHandler implements ActionListener{
+    public  class EasyHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
             createEasyGame();
@@ -562,7 +564,7 @@ public class Game {
             createHardGame();
         }
     }
-    public static class CheckSetHandler implements ActionListener{
+    public class CheckSetHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
             correctSetConfetti();
@@ -588,13 +590,11 @@ public class Game {
                         cardRect.setBackground(Color.DARK_GRAY); // Change back to gray if already yellow
                         selectedCards.remove(card); // Remove the un-clicked card from the selected cards list
                     }
-
-
             }
         });
     }
 
-    public static void addMouseListenerToCardWithConfetti(JPanel cardRect, ArrayList<Card> selectedCards, Card card) {
+    public void addMouseListenerToCardWithConfetti(JPanel cardRect, ArrayList<Card> selectedCards, Card card) {
         cardRect.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -609,7 +609,7 @@ public class Game {
                 // Check for a set when three cards are selected
                 if(selectedCards.size() <= 3) {
                     if (selectedCards.size() == 3) {
-                        if (Board.confirmSet(selectedCards.get(0), selectedCards.get(1), selectedCards.get(2))) {
+                        if (board.confirmSet(selectedCards.toArray(new Card[3]))) {
                             System.out.println("SET!");
                             if(isEasy) points += 25;
                             else if(isMedium) points += 15;
@@ -625,22 +625,18 @@ public class Game {
                         selectedCards.clear(); // Clear the selected cards list after checking for a set
                     }
                 }
-
-
             }
         });
     }
 
 
 
-
-
-    public static void correctSetConfetti(){
+    public void correctSetConfetti(){
 
         // Check for a set when three cards are selected
         if(selectedCards.size() <= 3) {
             if (selectedCards.size() == 3) {
-                if (Board.confirmSet(selectedCards.get(0), selectedCards.get(1), selectedCards.get(2))) {
+                if (board.confirmSet(selectedCards.toArray(new Card[3]))) {
                     System.out.println("SET!");
 
                     if(isEasy) points += 25;
@@ -674,10 +670,6 @@ public class Game {
         }
         return cards;
     }
-
-
-
-
 
 
     public static void main(String[] args) {
