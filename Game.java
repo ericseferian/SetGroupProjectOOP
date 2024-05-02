@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Game {
+
+    private Board b;
+
     //window properties
     static JFrame window;
     JLabel titleNameLabel, difNameLabel;

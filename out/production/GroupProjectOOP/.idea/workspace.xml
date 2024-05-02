@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="81419f05-2002-493c-ae3d-91fbfe53357f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/out/production/GroupProjectOOP/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GroupProjectOOP/Brainstorming.rtf" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GroupProjectOOP/Brainstorming.rtf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GroupProjectOOP/Dealer.class" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Player.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +51,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Dealer",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/Ric/Documents/GitHub/GroupProjectOOP",
     "node.js.detected.package.eslint": "true",
@@ -84,6 +82,11 @@
       <workItem from="1712823060619" duration="5972000" />
       <workItem from="1712903817894" duration="5806000" />
       <workItem from="1712946966556" duration="242000" />
+      <workItem from="1713800907892" duration="5633000" />
+      <workItem from="1713968949594" duration="512000" />
+      <workItem from="1713969471945" duration="337000" />
+      <workItem from="1714300675964" duration="216000" />
+      <workItem from="1714558910047" duration="2738000" />
     </task>
     <servers />
   </component>
