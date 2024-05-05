@@ -172,7 +172,7 @@ public class Game {
 
         //Check Set button
         checkSetButtonPanel = new JPanel();
-        checkSetButtonPanel.setBounds(1300, 100, 200, 100);
+        checkSetButtonPanel.setBounds(1300, 100, 100, 52);
         checkSetButtonPanel.setBackground(Color.GRAY);
         checkSetButton = new JButton("SET!");
         checkSetButton.setBackground(Color.green);
@@ -184,7 +184,7 @@ public class Game {
 
         //Main Menu Button
         mmButtonPanel = new JPanel();
-        mmButtonPanel.setBounds(100, 100, 300, 100);
+        mmButtonPanel.setBounds(100, 100, 180, 52);
         mmButtonPanel.setBackground(Color.GRAY);
         mmButton = new JButton("Main Menu");
         mmButton.setBackground(Color.DARK_GRAY);
@@ -305,7 +305,8 @@ public class Game {
         cardPanel = new JPanel();
         cardPanel.setBounds(150, 300, 1200, 520);
         cardPanel.setLayout(new GridLayout(3, 4, 200, 100)); // 3 rows, 4 columns
-        cardPanel.setBackground(Color.GRAY);
+        if(isPartyTime) cardPanel.setBackground(colors[colorIndex]);
+        else cardPanel.setBackground(Color.GRAY);
 
 
         // Generate and add 12 cards to the panel
@@ -373,7 +374,8 @@ public class Game {
         cardPanel = new JPanel();
         cardPanel.setBounds(150, 300, 1200, 520);
         cardPanel.setLayout(new GridLayout(3, 4, 200, 100)); // 3 rows, 4 columns
-        cardPanel.setBackground(Color.GRAY);
+        if(isPartyTime) cardPanel.setBackground(colors[colorIndex]);
+        else cardPanel.setBackground(Color.GRAY);
 
         //ImageIcon cardImage = new ImageIcon(Card.getImagePath());
 
@@ -415,6 +417,7 @@ public class Game {
         isMedium = false;
         isHard = true;
 
+
         startButtonPanel.setVisible(false);
         titleNamePanel.setVisible(false);
         rulesButtonPanel.setVisible(false);
@@ -440,7 +443,8 @@ public class Game {
         cardPanel = new JPanel();
         cardPanel.setBounds(150, 300, 1200, 520);
         cardPanel.setLayout(new GridLayout(3, 4, 200, 100)); // 3 rows, 4 columns
-        cardPanel.setBackground(Color.GRAY);
+        if(isPartyTime) cardPanel.setBackground(colors[colorIndex]);
+        else cardPanel.setBackground(Color.GRAY);
 
         //ImageIcon cardImage = new ImageIcon(Card.getImagePath());
 
@@ -492,19 +496,19 @@ public class Game {
         // Create a main panel for the rules content
         rulesPanel = new JPanel();
         rulesPanel.setLayout(null);
-        rulesPanel.setBounds(100, 50, 1500, 800);
+        rulesPanel.setBounds(100, 50, 1400, 800);
         rulesPanel.setBackground(Color.WHITE);
         window.add(rulesPanel);
 
         // Create a scroll pane for the rules text
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(50, 50, 1300, 900);
+        scrollPane.setBounds(50, 50, 1300, 750);
         rulesPanel.add(scrollPane);
 
         // Create a JTextArea for the rules text
         JTextArea rulesTextArea = new JTextArea();
         rulesTextArea.setText(" In the game, certain combinations of three cards are said to make up a \"set\". " +
-                " For each one of the four categories of features: Color, number, shape, and shading. The three cards " +
+                " For each one of the four categories of features: Color, number, shape, and shading.    The three cards " +
                 " must display that feature as either a) all the same, or b) all different. Put another way: For each " +
                 " feature the three cards must avoid having two cards showing one version of the feature and the remaining " +
                 " card showing a different version.\n\n" +
@@ -746,10 +750,6 @@ public class Game {
         });
     }
 
-
-
-
-
     public static void correctSetConfetti(){
 
         // Check for a set when three cards are selected
@@ -795,7 +795,7 @@ public class Game {
 
     //////////////////////////////////////////  EASTER EGG  //////////////////////////////////////////
 
-    private static boolean konamiCodeEntered = false;
+    private static boolean isPartyTime = false;
     private static Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE};
     private static int colorIndex = 0;
     private static Timer colorTimer;
@@ -821,7 +821,7 @@ public class Game {
             if (e.getKeyCode() == konamiCode[konamiIndex]) {
                 konamiIndex++;
                 if (konamiIndex == konamiCode.length) {
-                    konamiCodeEntered = true;
+                    isPartyTime = true;
                     startColorTimer();
                 }
             } else {
@@ -840,13 +840,24 @@ public class Game {
         colorTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (konamiCodeEntered) {
+                if (isPartyTime) {
                     if (colorIndex < colors.length - 1) {
                         colorIndex++;
                     } else {
                         colorIndex = 0;
                     }
                     window.getContentPane().setBackground(colors[colorIndex]);
+                    titleNamePanel.setBackground(colors[colorIndex]);
+                    startButtonPanel.setBackground(colors[colorIndex]);
+                    rulesButtonPanel.setBackground(colors[colorIndex]);
+                    exitButtonPanel.setBackground(colors[colorIndex]);
+                    easyButtonPanel.setBackground(colors[colorIndex]);
+                    mediumButtonPanel.setBackground(colors[colorIndex]);
+                    hardButtonPanel.setBackground(colors[colorIndex]);
+                    checkSetButtonPanel.setBackground(colors[colorIndex]);
+                    backButtonPanel.setBackground(colors[colorIndex]);
+                    mmButtonPanel.setBackground(colors[colorIndex]);
+
                 } else {
                     colorTimer.cancel();
                     colorTimer.purge();
