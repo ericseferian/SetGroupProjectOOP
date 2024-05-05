@@ -15,7 +15,7 @@ public class Game {
     static JFrame window;
     JLabel titleNameLabel, difNameLabel;
     static JPanel titleNamePanel, pointsPanel, cardPanel, difNamePanel, rulesPanel;
-    static JPanel startButtonPanel, rulesButtonPanel, exitButtonPanel, easyButtonPanel, mediumButtonPanel, hardButtonPanel, backButtonPanel, checkSetButtonPanel, mmButtonPanel;
+    static JPanel startButtonPanel, rulesButtonPanel, exitButtonPanel, easyButtonPanel, mediumButtonPanel, hardButtonPanel, backButtonPanel, checkSetButtonPanel, mmButtonPanel, gameOverPanel, youWonPanel;
     JButton startButton, rulesButton, exitButton, easyButton, mediumButton, hardButton, backButton, checkSetButton, mmButton;
     static Container con;
     Font titleFont = new Font("Times New Roman", Font.PLAIN, 90);
@@ -270,6 +270,8 @@ public class Game {
         window.getContentPane().setBackground(Color.BLACK);
         checkSetButtonPanel.setVisible(false);
         pointsPanel.setVisible(false);
+        if(gameOverPanel != null) gameOverPanel.setVisible(false);
+        if(youWonPanel != null) youWonPanel.setVisible(false);
 
     }
 
@@ -532,13 +534,99 @@ public class Game {
     }
 
     public static void createGameOverScreen() {
+        // Hide unnecessary panels
+        startButtonPanel.setVisible(false);
+        titleNamePanel.setVisible(false);
+        rulesButtonPanel.setVisible(false);
+        exitButtonPanel.setVisible(false);
+        backButtonPanel.setVisible(false);
+        cardPanel.setVisible(false);
+        pointsPanel.setVisible(false);
+        checkSetButtonPanel.setVisible(false);
+        mmButtonPanel.setVisible(false);
 
+        // Set the background color of the content pane
+        window.getContentPane().setBackground(Color.BLACK);
 
-    } //TODO
+        // Create a main panel for the game over screen content
+        gameOverPanel = new JPanel();
+        gameOverPanel.setLayout(null);
+        gameOverPanel.setBounds(100, 66, 1400, 1000);
+        gameOverPanel.setBackground(Color.RED);
+        window.add(gameOverPanel);
+
+        // Create a JLabel for the game over message
+        JLabel gameOverLabel = new JLabel("Game Over!");
+        gameOverLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        gameOverLabel.setForeground(Color.WHITE);
+        gameOverLabel.setBounds(600, 150, 200, 50);
+        gameOverPanel.add(gameOverLabel);
+
+        // Create a JButton for returning to the main menu
+        JButton returnButton = new JButton("Return to Main Menu");
+        returnButton.setFocusPainted(false);
+        returnButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        returnButton.setBounds(600, 400, 200, 50);
+        returnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createMainMenu();
+            }
+        });
+        gameOverPanel.add(returnButton);
+
+        // Make the game over screen visible
+        gameOverPanel.setVisible(true);
+
+    }
 
     public static void createYouWonScreen() {
+        // Hide unnecessary panels
+        startButtonPanel.setVisible(false);
+        titleNamePanel.setVisible(false);
+        rulesButtonPanel.setVisible(false);
+        exitButtonPanel.setVisible(false);
+        backButtonPanel.setVisible(false);
+        cardPanel.setVisible(false);
+        pointsPanel.setVisible(false);
+        checkSetButtonPanel.setVisible(false);
+        mmButtonPanel.setVisible(false);
 
-    } //TODO
+        // Set the background color of the content pane
+        window.getContentPane().setBackground(Color.WHITE);
+
+        // Create a main panel for the game over screen content
+        youWonPanel = new JPanel();
+        youWonPanel.setLayout(null);
+        youWonPanel.setBounds(100, 66, 1400, 1000);
+        youWonPanel.setBackground(Color.GREEN);
+        window.add(youWonPanel);
+
+        // Create a JLabel for the game over message
+        JLabel youWonLabel = new JLabel("You Won!");
+        youWonLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        youWonLabel.setForeground(Color.WHITE);
+        youWonLabel.setBounds(625, 150, 200, 50);
+        youWonPanel.add(youWonLabel);
+
+        // Create a JButton for returning to the main menu
+        JButton returnButton = new JButton("Return to Main Menu");
+        returnButton.setFocusPainted(false);
+        returnButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        returnButton.setBounds(600, 400, 200, 50);
+        returnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createMainMenu();
+            }
+        });
+        youWonPanel.add(returnButton);
+
+        // Make the game over screen visible
+        youWonPanel.setVisible(true);
+
+    }
+
 
     public static void exitGame() {
         window.setVisible(false);
@@ -774,6 +862,7 @@ public class Game {
     }
 
     ////////////////////////////////////////// End Of Easter Egg //////////////////////////////////////////
+
 
 
 
