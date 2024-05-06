@@ -42,8 +42,8 @@ public class Board {
         this.deck = deck;
     }
 
-    public void addColumn(){
-        if (!isSetPresent(this.activeCards)){
+    public void addColumn() {
+        if (!isSetPresent(this.activeCards)) {
             this.boardWidth += 1;
         }
         for (int i = 0; i < BOARD_HEIGHT; i++) {
@@ -99,7 +99,7 @@ public class Board {
         return board;
     }
 
-    //must be all different, or 3 different and one same, Or 3 same and 1 different.
+    //must be all different, or 3 different and one same, Or 3 same and 1 different, or two same two different.
     public boolean confirmSet(Card[] potentialSet) {
         Set<Card.ColorEnum> colors = new HashSet<>();
         Set<Card.NumberEnum> numbers = new HashSet<>();
@@ -112,9 +112,17 @@ public class Board {
             shapes.add(card.shape);
             shadings.add(card.shading);
         }
+        ///////
+        System.out.println(colors.toString());
+        System.out.println(numbers.toString());
+        System.out.println(shapes.toString());
+        System.out.println(shadings.toString());
+
+
         // Check if all attributes are different
         boolean allDifferent = colors.size() == 3 && numbers.size() == 3 &&
                 shapes.size() == 3 && shadings.size() == 3;
+
         // Check if there are three different attributes and one same
         boolean threeDifferentOneSame = (colors.size() == 3 && numbers.size() == 3 &&
                 shapes.size() == 3 && shadings.size() == 1) ||
@@ -124,6 +132,7 @@ public class Board {
                         shapes.size() == 3 && shadings.size() == 3) ||
                 (colors.size() == 1 && numbers.size() == 3 &&
                         shapes.size() == 3 && shadings.size() == 3);
+
         // Check if there are three same attributes and one different
         boolean threeSameOneDifferent = (colors.size() == 1 && numbers.size() == 1 &&
                 shapes.size() == 1 && shadings.size() == 3) ||
@@ -134,7 +143,20 @@ public class Board {
                 (colors.size() == 3 && numbers.size() == 1 &&
                         shapes.size() == 1 && shadings.size() == 1);
 
-        return allDifferent || threeDifferentOneSame || threeSameOneDifferent;
+        boolean twoSameTwoDifferent = (colors.size() == 3 && numbers.size() == 3 &&
+                shapes.size() == 1 && shadings.size() == 1) ||
+                (colors.size() == 3 && numbers.size() == 1 &&
+                        shapes.size() == 3 && shadings.size() == 1) ||
+                (colors.size() == 3 && numbers.size() == 1 &&
+                        shapes.size() == 1 && shadings.size() == 3) ||
+                (colors.size() == 1 && numbers.size() == 3 &&
+                        shapes.size() == 3 && shadings.size() == 1) ||
+                (colors.size() == 1 && numbers.size() == 3 &&
+                        shapes.size() == 1 && shadings.size() == 3) ||
+                (colors.size() == 1 && numbers.size() == 1 &&
+                shapes.size() == 3 && shadings.size() == 3);
+
+        return allDifferent || threeDifferentOneSame || threeSameOneDifferent || twoSameTwoDifferent;
     }
 
 
