@@ -7,9 +7,9 @@ public class DesignDraft {
     public static void main(String[] args) {
 
         Board b = new Board();
-        b.printBoard(b.getActiveCards());
-        System.out.println(b.isSetPresent(b.getActiveCards()));
-
+//        b.printBoard(b.getActiveCards());
+//        System.out.println(b.isSetPresent(b.getActiveCards()));
+//
 //        Card one = new Card(
 //                Card.ColorEnum.RED,
 //                Card.NumberEnum.ONE ,
@@ -32,11 +32,6 @@ public class DesignDraft {
 //
 //        System.out.println(b.confirmSet(c));
 
-//        ArrayList aNewDeckOfCards = Card.makeDeck();
-//        for ( Object card : aNewDeckOfCards)
-//        {
-//            System.out.println(card.toString());
-//        }
     }
 
 
