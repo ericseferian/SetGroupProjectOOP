@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Card {
 //Color, number, shape, and shading each have three possibilities.
@@ -30,23 +31,7 @@ public class Card {
     //For example, if you put the images I provided into a folder called "Cards" on your Desktop, your Path should look like this: "C:\\Users\\YourUsername\\Desktop\\Cards\\"
 
     ///////////////////////////
-    
-    
-    /*
 
-    public Card(ColorEnum cardColor,
-                NumberEnum cardNumber,
-                ShapeEnum cardShape,
-                ShadingEnum cardShading){
-
-        this.color = cardColor;
-        this.number = cardNumber;
-        this.shape = cardShape;
-        this.shading = cardShading;
-
-    }
-
-     */
 
     private String imagePath;
 
@@ -182,5 +167,12 @@ public class Card {
                 "Shading: " + shading + "\n";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return color == card.color && number == card.number && shape == card.shape && shading == card.shading;
+    }
 }
 

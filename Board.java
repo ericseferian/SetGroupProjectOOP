@@ -4,9 +4,7 @@
 // removes the used cards from the deck
 //potentially interacts with a board object
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 public class Board {
 
@@ -44,11 +42,14 @@ public class Board {
         this.deck = deck;
     }
 
-//write a method to check if there's a set on the board or not
-    //compare all 3 card combinations
-    //if one is a set, continue the game
-    //TODO:
-    //else, add a column of 3 cards
+    public void addColumn(){
+        if (!isSetPresent(this.activeCards)){
+            this.boardWidth += 1;
+        }
+        for (int i = 0; i < BOARD_HEIGHT; i++) {
+            activeCards[boardWidth][i] = deck.removeFirst();
+        }
+    }
 
 
     public boolean isSetPresent(Card[][] activeCards) {
@@ -82,7 +83,6 @@ public class Board {
         return cards;
     }
 
-
     public Board() {
         this.deck = Card.makeDeck();
         this.activeCards = initializeBoard(deck);
@@ -99,26 +99,42 @@ public class Board {
         return board;
     }
 
-
-    //must be all the same or all different.
+    //must be all different, or 3 different and one same, Or 3 same and 1 different.
     public boolean confirmSet(Card[] potentialSet) {
-        Card card1 = potentialSet[0];
-        Card card2 = potentialSet[1];
-        Card card3 = potentialSet[2];
-        if (
-                (!card1.color.equals(card2.color) && !card1.color.equals(card3.color) && !card2.color.equals(card3.color))
-                        && ((!card1.number.equals(card2.number) && !card1.number.equals(card3.number) && !card2.number.equals(card3.number))
-                        && ((!card1.shape.equals(card2.shape) && !card1.shape.equals(card3.shape) && !card2.shape.equals(card3.shape))
-                        && ((!card1.shading.equals(card2.shading) && !card1.shading.equals(card3.shading) && !card2.shading.equals(card3.shading)))))
-        ) {
-            return true;
-        } else if ((card1.color.equals(card2.color) && card1.color.equals(card3.color))
-                && ((card1.number.equals(card2.number) && card1.number.equals(card3.number))
-                && ((card1.shape.equals(card2.shape) && card1.shape.equals(card3.shape))
-                && ((card1.shading.equals(card2.shading) && card1.shading.equals(card3.shading)))))) {
-            return true;
-        } else
-            return false;
+        Set<Card.ColorEnum> colors = new HashSet<>();
+        Set<Card.NumberEnum> numbers = new HashSet<>();
+        Set<Card.ShapeEnum> shapes = new HashSet<>();
+        Set<Card.ShadingEnum> shadings = new HashSet<>();
+
+        for (Card card : potentialSet) {
+            colors.add(card.color);
+            numbers.add(card.number);
+            shapes.add(card.shape);
+            shadings.add(card.shading);
+        }
+        // Check if all attributes are different
+        boolean allDifferent = colors.size() == 3 && numbers.size() == 3 &&
+                shapes.size() == 3 && shadings.size() == 3;
+        // Check if there are three different attributes and one same
+        boolean threeDifferentOneSame = (colors.size() == 3 && numbers.size() == 3 &&
+                shapes.size() == 3 && shadings.size() == 1) ||
+                (colors.size() == 3 && numbers.size() == 3 &&
+                        shapes.size() == 1 && shadings.size() == 3) ||
+                (colors.size() == 3 && numbers.size() == 1 &&
+                        shapes.size() == 3 && shadings.size() == 3) ||
+                (colors.size() == 1 && numbers.size() == 3 &&
+                        shapes.size() == 3 && shadings.size() == 3);
+        // Check if there are three same attributes and one different
+        boolean threeSameOneDifferent = (colors.size() == 1 && numbers.size() == 1 &&
+                shapes.size() == 1 && shadings.size() == 3) ||
+                (colors.size() == 1 && numbers.size() == 1 &&
+                        shapes.size() == 3 && shadings.size() == 1) ||
+                (colors.size() == 1 && numbers.size() == 3 &&
+                        shapes.size() == 1 && shadings.size() == 1) ||
+                (colors.size() == 3 && numbers.size() == 1 &&
+                        shapes.size() == 1 && shadings.size() == 1);
+
+        return allDifferent || threeDifferentOneSame || threeSameOneDifferent;
     }
 
 
