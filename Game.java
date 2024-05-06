@@ -15,8 +15,8 @@ public class Game {
     static JFrame window;
     JLabel titleNameLabel, difNameLabel;
     static JPanel titleNamePanel, pointsPanel, cardPanel, difNamePanel, rulesPanel;
-    static JPanel startButtonPanel, rulesButtonPanel, exitButtonPanel, easyButtonPanel, mediumButtonPanel, hardButtonPanel, backButtonPanel, checkSetButtonPanel, mmButtonPanel, gameOverPanel, youWonPanel;
-    JButton startButton, rulesButton, exitButton, easyButton, mediumButton, hardButton, backButton, checkSetButton, mmButton;
+    static JPanel startButtonPanel, rulesButtonPanel, exitButtonPanel, easyButtonPanel, mediumButtonPanel, hardButtonPanel, backButtonPanel, checkSetButtonPanel, mmButtonPanel, gameOverPanel, youWonPanel, nspButtonPanel;
+    JButton startButton, rulesButton, exitButton, easyButton, mediumButton, hardButton, backButton, checkSetButton, mmButton, nspButton;
     static Container con;
     Font titleFont = new Font("Times New Roman", Font.PLAIN, 90);
     Font normalFont = new Font("Times New Roman", Font.PLAIN, 28);
@@ -29,6 +29,7 @@ public class Game {
     HardHandler hdHandler = new HardHandler();
     CheckSetHandler chHandler = new CheckSetHandler();
     MMHandler mmHandler = new MMHandler();
+    NspHandler nspHandler = new NspHandler();
     static int points = 100; // Placeholder
     static boolean isEasy;
     static boolean isMedium;
@@ -172,7 +173,7 @@ public class Game {
 
         //Check Set button
         checkSetButtonPanel = new JPanel();
-        checkSetButtonPanel.setBounds(1300, 100, 100, 52);
+        checkSetButtonPanel.setBounds(700, 120, 100, 52);
         checkSetButtonPanel.setBackground(Color.GRAY);
         checkSetButton = new JButton("SET!");
         checkSetButton.setBackground(Color.green);
@@ -182,9 +183,21 @@ public class Game {
         checkSetButton.addActionListener(chHandler);
         checkSetButtonPanel.setVisible(false);
 
+        //No Set Present button
+        nspButtonPanel = new JPanel();
+        nspButtonPanel.setBounds(1170, 100, 200, 52);
+        nspButtonPanel.setBackground(Color.GRAY);
+        nspButton = new JButton("No Set Present");
+        nspButton.setBackground(Color.red);
+        nspButton.setForeground(Color.black);
+        nspButton.setFont(normalFont);
+        nspButton.setFocusPainted(false);
+        nspButton.addActionListener(nspHandler);
+        nspButtonPanel.setVisible(false);
+
         //Main Menu Button
         mmButtonPanel = new JPanel();
-        mmButtonPanel.setBounds(100, 100, 180, 52);
+        mmButtonPanel.setBounds(115, 100, 180, 52);
         mmButtonPanel.setBackground(Color.GRAY);
         mmButton = new JButton("Main Menu");
         mmButton.setBackground(Color.DARK_GRAY);
@@ -206,6 +219,7 @@ public class Game {
         backButtonPanel.add(backButton);
         checkSetButtonPanel.add(checkSetButton);
         mmButtonPanel.add(mmButton);
+        nspButtonPanel.add(nspButton);
 
         con.add(rulesButtonPanel);
         con.add(startButtonPanel);
@@ -216,6 +230,7 @@ public class Game {
         con.add(backButtonPanel);
         con.add(checkSetButtonPanel);
         con.add(mmButtonPanel);
+        con.add(nspButtonPanel);
         window.setVisible(true);
         //////////////
 
@@ -223,6 +238,11 @@ public class Game {
         //create card deck
         this.deck = Card.makeDeck();
         Collections.shuffle(this.deck);
+    }
+
+    public static void addNewCards(Card[] newCards) {
+
+
     }
 
     public static void createDifMenu() {
@@ -270,9 +290,9 @@ public class Game {
         window.getContentPane().setBackground(Color.BLACK);
         checkSetButtonPanel.setVisible(false);
         pointsPanel.setVisible(false);
+        nspButtonPanel.setVisible(false);
         if(gameOverPanel != null) gameOverPanel.setVisible(false);
         if(youWonPanel != null) youWonPanel.setVisible(false);
-
     }
 
     public static void createEasyGame() {
@@ -290,6 +310,7 @@ public class Game {
         difNamePanel.setVisible(false);
         backButtonPanel.setVisible(false);
         mmButtonPanel.setVisible(true);
+        nspButtonPanel.setVisible(true);
 
 
         window.getContentPane().setBackground(Color.GRAY);
@@ -341,8 +362,6 @@ public class Game {
         //textArea.setLineWrap(true);
         pointsPanel.add(textArea);
 
-
-
     }
 
     public static void createMediumGame() {
@@ -360,6 +379,7 @@ public class Game {
         backButtonPanel.setVisible(false);
         checkSetButtonPanel.setVisible(true);
         mmButtonPanel.setVisible(true);
+        nspButtonPanel.setVisible(true);
 
         window.getContentPane().setBackground(Color.GRAY);
 
@@ -429,6 +449,7 @@ public class Game {
         backButtonPanel.setVisible(false);
         checkSetButtonPanel.setVisible(true);
         mmButtonPanel.setVisible(true);
+        nspButtonPanel.setVisible(true);
 
         window.getContentPane().setBackground(Color.GRAY);
 
@@ -662,7 +683,6 @@ public class Game {
             hideDifMenu();
         }
     }
-
     public static class EasyHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
@@ -691,6 +711,12 @@ public class Game {
 
         public void actionPerformed(ActionEvent event){
             createMainMenu();
+        }
+    }
+    public static class NspHandler implements ActionListener{
+
+        public void actionPerformed(ActionEvent event){
+            addNewCards(Board.addNewCards(deck));
         }
     }
 
@@ -728,7 +754,7 @@ public class Game {
                 // Check for a set when three cards are selected
                 if(selectedCards.size() <= 3) {
                     if (selectedCards.size() == 3) {
-                        if (Board.confirmSet(selectedCards.get(0), selectedCards.get(1), selectedCards.get(2))) {
+                        if (Board.confirmSet(selectedCards.toArray(new Card[3]))) {
                             System.out.println("SET!");
                             if(isEasy) points += 25;
                             else if(isMedium) points += 15;
@@ -755,7 +781,7 @@ public class Game {
         // Check for a set when three cards are selected
         if(selectedCards.size() <= 3) {
             if (selectedCards.size() == 3) {
-                if (Board.confirmSet(selectedCards.get(0), selectedCards.get(1), selectedCards.get(2))) {
+                if (Board.confirmSet(selectedCards.toArray(new Card[3]))) {
                     System.out.println("SET!");
 
                     if(isEasy) points += 25;
@@ -857,6 +883,11 @@ public class Game {
                     checkSetButtonPanel.setBackground(colors[colorIndex]);
                     backButtonPanel.setBackground(colors[colorIndex]);
                     mmButtonPanel.setBackground(colors[colorIndex]);
+                    difNamePanel.setBackground(colors[colorIndex]);
+                    if(pointsPanel != null) pointsPanel.setBackground(colors[colorIndex]);
+                    if(cardPanel != null) cardPanel.setBackground(colors[colorIndex]);
+                    if(rulesPanel != null) rulesPanel.setBackground(colors[colorIndex]);
+                    if(nspButtonPanel != null) nspButtonPanel.setBackground(colors[colorIndex]);
 
                 } else {
                     colorTimer.cancel();
