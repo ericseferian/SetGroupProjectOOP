@@ -1,21 +1,21 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.TimerTask;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Timer;
 
 public class Game {
-
-    private Board board;
-
     //window properties
     static JFrame window;
     JLabel titleNameLabel, difNameLabel;
-    static JPanel titleNamePanel, textPanel, cardPanel, difNamePanel;
-    static JPanel startButtonPanel, rulesButtonPanel, exitButtonPanel, easyButtonPanel, mediumButtonPanel, hardButtonPanel, backButtonPanel, checkSetButtonPanel, mmButtonPanel;
+    static JPanel titleNamePanel, pointsPanel, cardPanel, difNamePanel, rulesPanel;
+    static JPanel startButtonPanel, rulesButtonPanel, exitButtonPanel, easyButtonPanel, mediumButtonPanel, hardButtonPanel, backButtonPanel, checkSetButtonPanel, mmButtonPanel, gameOverPanel, youWonPanel;
     JButton startButton, rulesButton, exitButton, easyButton, mediumButton, hardButton, backButton, checkSetButton, mmButton;
     static Container con;
     Font titleFont = new Font("Times New Roman", Font.PLAIN, 90);
@@ -36,7 +36,7 @@ public class Game {
 
 
 
-    JTextArea textArea;
+    static JTextArea pointsArea;
     ImageIcon originalIcon = new ImageIcon("C:\\Users\\Mompas\\Downloads\\cover.png");
 
     // Calculate the desired width and height for the scaled image
@@ -52,8 +52,6 @@ public class Game {
     private static ArrayList<Card> deck;
 
     public Game() {
-
-        this.board = new Board();
 
         //create UI window
         window = new JFrame();
@@ -174,7 +172,7 @@ public class Game {
 
         //Check Set button
         checkSetButtonPanel = new JPanel();
-        checkSetButtonPanel.setBounds(1300, 100, 200, 100);
+        checkSetButtonPanel.setBounds(1300, 100, 100, 52);
         checkSetButtonPanel.setBackground(Color.GRAY);
         checkSetButton = new JButton("SET!");
         checkSetButton.setBackground(Color.green);
@@ -186,7 +184,7 @@ public class Game {
 
         //Main Menu Button
         mmButtonPanel = new JPanel();
-        mmButtonPanel.setBounds(100, 100, 300, 100);
+        mmButtonPanel.setBounds(100, 100, 180, 52);
         mmButtonPanel.setBackground(Color.GRAY);
         mmButton = new JButton("Main Menu");
         mmButton.setBackground(Color.DARK_GRAY);
@@ -252,6 +250,7 @@ public class Game {
         titleNamePanel.setVisible(true);
         backButtonPanel.setVisible(false);
         checkSetButtonPanel.setVisible(false);
+        if(rulesPanel != null) rulesPanel.setVisible(false);
 
 
     }
@@ -269,12 +268,14 @@ public class Game {
         mmButtonPanel.setVisible(false);
         cardPanel.setVisible(false);
         window.getContentPane().setBackground(Color.BLACK);
-        textPanel.setVisible(false);
         checkSetButtonPanel.setVisible(false);
+        pointsPanel.setVisible(false);
+        if(gameOverPanel != null) gameOverPanel.setVisible(false);
+        if(youWonPanel != null) youWonPanel.setVisible(false);
 
     }
 
-    public  void createEasyGame() {
+    public static void createEasyGame() {
 
         isEasy = true;
         isMedium = false;
@@ -293,20 +294,20 @@ public class Game {
 
         window.getContentPane().setBackground(Color.GRAY);
 
-        textPanel = new JPanel();
-        textPanel.setBounds(650,50, 800,400);
-        textPanel.setSize(200,30);
-        textPanel.setVisible(true);
-        textPanel.setBackground(Color.WHITE);
-        con.add(textPanel);
+        pointsPanel = new JPanel();
+        pointsPanel.setBounds(650,50, 800,400);
+        pointsPanel.setSize(200,30);
+        pointsPanel.setVisible(true);
+        pointsPanel.setBackground(Color.WHITE);
+        con.add(pointsPanel);
 
 
         cardPanel = new JPanel();
         cardPanel.setBounds(150, 300, 1200, 520);
         cardPanel.setLayout(new GridLayout(3, 4, 200, 100)); // 3 rows, 4 columns
-        cardPanel.setBackground(Color.GRAY);
+        if(isPartyTime) cardPanel.setBackground(colors[colorIndex]);
+        else cardPanel.setBackground(Color.GRAY);
 
-        //ImageIcon cardImage = new ImageIcon(Card.getImagePath());
 
         // Generate and add 12 cards to the panel
         ArrayList<Card> cards = generateCards(deck);
@@ -314,15 +315,15 @@ public class Game {
             JPanel cardRect = new JPanel();
             addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);
             cardRect.setPreferredSize(new Dimension(300, 200)); // Set size of each rectangle (Doesn't work and idk why)
-            cardRect.setBackground(Color.DARK_GRAY); // Set background color for the rectangle
+            cardRect.setBackground(Color.DARK_GRAY);
 
 
             ImageIcon cardImage = new ImageIcon(card.imagePath());
             JLabel cardLabel = new JLabel(cardImage);
-            cardLabel.setBounds(0, 0, 500, 200); // Set bounds for the image label
+            cardLabel.setBounds(0, 0, 500, 200);
 
-            cardRect.add(cardLabel); // Add image label to rectangle panel
-            cardPanel.add(cardRect); // Add rectangle panel to cardPanel
+            cardRect.add(cardLabel);
+            cardPanel.add(cardRect);
         }
 
 
@@ -338,7 +339,7 @@ public class Game {
         textArea.setForeground(Color.WHITE);
         textArea.setVisible(true);
         //textArea.setLineWrap(true);
-        textPanel.add(textArea);
+        pointsPanel.add(textArea);
 
 
 
@@ -362,18 +363,19 @@ public class Game {
 
         window.getContentPane().setBackground(Color.GRAY);
 
-        textPanel = new JPanel();
-        textPanel.setBounds(650,50, 800,400);
-        textPanel.setSize(200,30);
-        textPanel.setVisible(true);
-        textPanel.setBackground(Color.WHITE);
-        con.add(textPanel);
+        pointsPanel = new JPanel();
+        pointsPanel.setBounds(650,50, 800,400);
+        pointsPanel.setSize(200,30);
+        pointsPanel.setVisible(true);
+        pointsPanel.setBackground(Color.WHITE);
+        con.add(pointsPanel);
 
 
         cardPanel = new JPanel();
         cardPanel.setBounds(150, 300, 1200, 520);
         cardPanel.setLayout(new GridLayout(3, 4, 200, 100)); // 3 rows, 4 columns
-        cardPanel.setBackground(Color.GRAY);
+        if(isPartyTime) cardPanel.setBackground(colors[colorIndex]);
+        else cardPanel.setBackground(Color.GRAY);
 
         //ImageIcon cardImage = new ImageIcon(Card.getImagePath());
 
@@ -398,15 +400,15 @@ public class Game {
         con.add(cardPanel);
 
 
-        JTextArea textArea = new JTextArea(" POINTS: " + points);
-        textArea.setBounds(0,200,800,400);
-        textArea.setLayout(null);
-        textArea.setSize(1000,2000);
-        textArea.setBackground(Color.BLACK);
-        textArea.setForeground(Color.WHITE);
-        textArea.setVisible(true);
+        pointsArea = new JTextArea(" POINTS: " + points);
+        pointsArea.setBounds(0,200,800,400);
+        pointsArea.setLayout(null);
+        pointsArea.setSize(1000,2000);
+        pointsArea.setBackground(Color.BLACK);
+        pointsArea.setForeground(Color.WHITE);
+        pointsArea.setVisible(true);
         //textArea.setLineWrap(true);
-        textPanel.add(textArea);
+        pointsPanel.add(pointsArea);
 
     }
 
@@ -414,6 +416,7 @@ public class Game {
         isEasy = false;
         isMedium = false;
         isHard = true;
+
 
         startButtonPanel.setVisible(false);
         titleNamePanel.setVisible(false);
@@ -429,18 +432,19 @@ public class Game {
 
         window.getContentPane().setBackground(Color.GRAY);
 
-        textPanel = new JPanel();
-        textPanel.setBounds(650,50, 800,400);
-        textPanel.setSize(200,30);
-        textPanel.setVisible(true);
-        textPanel.setBackground(Color.WHITE);
-        con.add(textPanel);
+        pointsPanel = new JPanel();
+        pointsPanel.setBounds(650,50, 800,400);
+        pointsPanel.setSize(200,30);
+        pointsPanel.setVisible(true);
+        pointsPanel.setBackground(Color.WHITE);
+        con.add(pointsPanel);
 
 
         cardPanel = new JPanel();
         cardPanel.setBounds(150, 300, 1200, 520);
         cardPanel.setLayout(new GridLayout(3, 4, 200, 100)); // 3 rows, 4 columns
-        cardPanel.setBackground(Color.GRAY);
+        if(isPartyTime) cardPanel.setBackground(colors[colorIndex]);
+        else cardPanel.setBackground(Color.GRAY);
 
         //ImageIcon cardImage = new ImageIcon(Card.getImagePath());
 
@@ -474,46 +478,159 @@ public class Game {
         textArea.setForeground(Color.WHITE);
         textArea.setVisible(true);
         //textArea.setLineWrap(true);
-        textPanel.add(textArea);
+        pointsPanel.add(textArea);
 
     }
 
     public static void createRulesPage() {
-
+        // Hide unnecessary panels
         startButtonPanel.setVisible(false);
         titleNamePanel.setVisible(false);
         rulesButtonPanel.setVisible(false);
         exitButtonPanel.setVisible(false);
         backButtonPanel.setVisible(true);
+
+        // Set the background color of the content pane
         window.getContentPane().setBackground(Color.BLACK);
 
-        textPanel = new JPanel();
-        textPanel.setBounds(50,50, 800,400);
-        textPanel.setSize(180,30);
-        textPanel.setVisible(true);
-        textPanel.setBackground(Color.WHITE);
-        con.add(textPanel);
+        // Create a main panel for the rules content
+        rulesPanel = new JPanel();
+        rulesPanel.setLayout(null);
+        rulesPanel.setBounds(100, 50, 1400, 800);
+        rulesPanel.setBackground(Color.WHITE);
+        window.add(rulesPanel);
 
-        JTextArea textArea = new JTextArea(" Hello? This is the Rules Page! ");
-        textArea.setBounds(0,200,800,400);
-        textArea.setLayout(null);
-        textArea.setSize(1000,2000);
-        textArea.setBackground(Color.BLACK);
-        textArea.setForeground(Color.WHITE);
-        textArea.setVisible(true);
-        //textArea.setLineWrap(true);
-        textPanel.add(textArea);
+        // Create a scroll pane for the rules text
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(50, 50, 1300, 750);
+        rulesPanel.add(scrollPane);
 
+        // Create a JTextArea for the rules text
+        JTextArea rulesTextArea = new JTextArea();
+        rulesTextArea.setText(" In the game, certain combinations of three cards are said to make up a \"set\". " +
+                " For each one of the four categories of features: Color, number, shape, and shading.    The three cards " +
+                " must display that feature as either a) all the same, or b) all different. Put another way: For each " +
+                " feature the three cards must avoid having two cards showing one version of the feature and the remaining " +
+                " card showing a different version.\n\n" +
+                " For example, 3 solid red diamonds, 2 solid green squiggles, and 1 solid purple oval form a set, because " +
+                " the shadings of the three cards are all the same, while the numbers, the colors, and the shapes among " +
+                " the three cards are all different.\n\n" +
+                " For any set, the number of features that are constant (the same on all three cards) and the number of " +
+                " features that differ (different on all three cards) may break down as: all 4 features differing; or 1 " +
+                " feature being constant and 3 differing; or 2 constant and 2 differing; or 3 constant and 1 differing. " +
+                " (All 4 features being constant would imply that the three cards in the set are identical, which is " +
+                " impossible since no cards in the Set deck are identical.)\n\n" +
+                " There are three difficulties. Easy, Medium, and Hard.\n\n" +
+                " Easy: Automatic set detection, therefore no incorrect set penalty.\n" +
+                " +25 Points per each correct set.\n\n" +
+                " Medium: Manual set detection, but no penalty for incorrect sets.\n" +
+                " +15 Points per each correct set.\n\n" +
+                " Hard: Manual set detection, with penalty for each incorrect set.\n" +
+                " +5 Points per each correct set.\n" +
+                " -15 per each incorrect set");
+        rulesTextArea.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        rulesTextArea.setWrapStyleWord(true);
+        rulesTextArea.setLineWrap(true);
+        rulesTextArea.setEditable(false);
+        scrollPane.setViewportView(rulesTextArea);
+
+        rulesPanel.setVisible(true);
     }
 
     public static void createGameOverScreen() {
+        // Hide unnecessary panels
+        startButtonPanel.setVisible(false);
+        titleNamePanel.setVisible(false);
+        rulesButtonPanel.setVisible(false);
+        exitButtonPanel.setVisible(false);
+        backButtonPanel.setVisible(false);
+        cardPanel.setVisible(false);
+        pointsPanel.setVisible(false);
+        checkSetButtonPanel.setVisible(false);
+        mmButtonPanel.setVisible(false);
 
+        // Set the background color of the content pane
+        window.getContentPane().setBackground(Color.BLACK);
 
-    } //TODO
+        // Create a main panel for the game over screen content
+        gameOverPanel = new JPanel();
+        gameOverPanel.setLayout(null);
+        gameOverPanel.setBounds(100, 66, 1400, 1000);
+        gameOverPanel.setBackground(Color.RED);
+        window.add(gameOverPanel);
+
+        // Create a JLabel for the game over message
+        JLabel gameOverLabel = new JLabel("Game Over!");
+        gameOverLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        gameOverLabel.setForeground(Color.WHITE);
+        gameOverLabel.setBounds(600, 150, 200, 50);
+        gameOverPanel.add(gameOverLabel);
+
+        // Create a JButton for returning to the main menu
+        JButton returnButton = new JButton("Return to Main Menu");
+        returnButton.setFocusPainted(false);
+        returnButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        returnButton.setBounds(600, 400, 200, 50);
+        returnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createMainMenu();
+            }
+        });
+        gameOverPanel.add(returnButton);
+
+        // Make the game over screen visible
+        gameOverPanel.setVisible(true);
+
+    }
 
     public static void createYouWonScreen() {
+        // Hide unnecessary panels
+        startButtonPanel.setVisible(false);
+        titleNamePanel.setVisible(false);
+        rulesButtonPanel.setVisible(false);
+        exitButtonPanel.setVisible(false);
+        backButtonPanel.setVisible(false);
+        cardPanel.setVisible(false);
+        pointsPanel.setVisible(false);
+        checkSetButtonPanel.setVisible(false);
+        mmButtonPanel.setVisible(false);
 
-    } //TODO
+        // Set the background color of the content pane
+        window.getContentPane().setBackground(Color.WHITE);
+
+        // Create a main panel for the game over screen content
+        youWonPanel = new JPanel();
+        youWonPanel.setLayout(null);
+        youWonPanel.setBounds(100, 66, 1400, 1000);
+        youWonPanel.setBackground(Color.GREEN);
+        window.add(youWonPanel);
+
+        // Create a JLabel for the game over message
+        JLabel youWonLabel = new JLabel("You Won!");
+        youWonLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        youWonLabel.setForeground(Color.WHITE);
+        youWonLabel.setBounds(625, 150, 200, 50);
+        youWonPanel.add(youWonLabel);
+
+        // Create a JButton for returning to the main menu
+        JButton returnButton = new JButton("Return to Main Menu");
+        returnButton.setFocusPainted(false);
+        returnButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        returnButton.setBounds(600, 400, 200, 50);
+        returnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createMainMenu();
+            }
+        });
+        youWonPanel.add(returnButton);
+
+        // Make the game over screen visible
+        youWonPanel.setVisible(true);
+
+    }
+
 
     public static void exitGame() {
         window.setVisible(false);
@@ -546,7 +663,7 @@ public class Game {
         }
     }
 
-    public  class EasyHandler implements ActionListener{
+    public static class EasyHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
             createEasyGame();
@@ -564,7 +681,7 @@ public class Game {
             createHardGame();
         }
     }
-    public class CheckSetHandler implements ActionListener{
+    public static class CheckSetHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
             correctSetConfetti();
@@ -590,11 +707,13 @@ public class Game {
                         cardRect.setBackground(Color.DARK_GRAY); // Change back to gray if already yellow
                         selectedCards.remove(card); // Remove the un-clicked card from the selected cards list
                     }
+
+
             }
         });
     }
 
-    public void addMouseListenerToCardWithConfetti(JPanel cardRect, ArrayList<Card> selectedCards, Card card) {
+    public static void addMouseListenerToCardWithConfetti(JPanel cardRect, ArrayList<Card> selectedCards, Card card) {
         cardRect.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -609,7 +728,7 @@ public class Game {
                 // Check for a set when three cards are selected
                 if(selectedCards.size() <= 3) {
                     if (selectedCards.size() == 3) {
-                        if (board.confirmSet(selectedCards.toArray(new Card[3]))) {
+                        if (Board.confirmSet(selectedCards.get(0), selectedCards.get(1), selectedCards.get(2))) {
                             System.out.println("SET!");
                             if(isEasy) points += 25;
                             else if(isMedium) points += 15;
@@ -625,18 +744,18 @@ public class Game {
                         selectedCards.clear(); // Clear the selected cards list after checking for a set
                     }
                 }
+
+
             }
         });
     }
 
-
-
-    public void correctSetConfetti(){
+    public static void correctSetConfetti(){
 
         // Check for a set when three cards are selected
         if(selectedCards.size() <= 3) {
             if (selectedCards.size() == 3) {
-                if (board.confirmSet(selectedCards.toArray(new Card[3]))) {
+                if (Board.confirmSet(selectedCards.get(0), selectedCards.get(1), selectedCards.get(2))) {
                     System.out.println("SET!");
 
                     if(isEasy) points += 25;
@@ -672,8 +791,97 @@ public class Game {
     }
 
 
+
+
+    //////////////////////////////////////////  EASTER EGG  //////////////////////////////////////////
+
+    private static boolean isPartyTime = false;
+    private static Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE};
+    private static int colorIndex = 0;
+    private static Timer colorTimer;
+
+
+    private static final int[] konamiCode = {
+            KeyEvent.VK_UP, KeyEvent.VK_UP,
+            KeyEvent.VK_DOWN, KeyEvent.VK_DOWN,
+            KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT,
+            KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT,
+
+    };
+    private static int konamiIndex = 0;
+
+
+    private static KeyListener konamiKeyListener = new KeyListener() {
+        @Override
+        public void keyTyped(KeyEvent e) {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == konamiCode[konamiIndex]) {
+                konamiIndex++;
+                if (konamiIndex == konamiCode.length) {
+                    isPartyTime = true;
+                    startColorTimer();
+                }
+            } else {
+                konamiIndex = 0;
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+        }
+    };
+
+
+    private static void startColorTimer() {
+        colorTimer = new Timer();
+        colorTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (isPartyTime) {
+                    if (colorIndex < colors.length - 1) {
+                        colorIndex++;
+                    } else {
+                        colorIndex = 0;
+                    }
+                    window.getContentPane().setBackground(colors[colorIndex]);
+                    titleNamePanel.setBackground(colors[colorIndex]);
+                    startButtonPanel.setBackground(colors[colorIndex]);
+                    rulesButtonPanel.setBackground(colors[colorIndex]);
+                    exitButtonPanel.setBackground(colors[colorIndex]);
+                    easyButtonPanel.setBackground(colors[colorIndex]);
+                    mediumButtonPanel.setBackground(colors[colorIndex]);
+                    hardButtonPanel.setBackground(colors[colorIndex]);
+                    checkSetButtonPanel.setBackground(colors[colorIndex]);
+                    backButtonPanel.setBackground(colors[colorIndex]);
+                    mmButtonPanel.setBackground(colors[colorIndex]);
+
+                } else {
+                    colorTimer.cancel();
+                    colorTimer.purge();
+                }
+            }
+        }, 0, 250);
+    }
+
+    private static void addKonamiKeyListener() {
+        titleNamePanel.addKeyListener(konamiKeyListener);
+        titleNamePanel.setFocusable(true);
+        titleNamePanel.requestFocusInWindow();
+    }
+
+    ////////////////////////////////////////// End Of Easter Egg //////////////////////////////////////////
+
+
+
+
+
+
     public static void main(String[] args) {
         Game game = new Game();
+        addKonamiKeyListener();
         }
     }
 
