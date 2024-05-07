@@ -11,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.util.Timer;
 
 public class Game {
+    Scorekeeper scorekeeper;
     //window properties
     static JFrame window;
     JLabel titleNameLabel, difNameLabel;
@@ -52,6 +53,7 @@ public class Game {
     private static ArrayList<Card> deck;
 
     public Game() {
+        scorekeeper.load();
 
         //create UI window
         window = new JFrame();
