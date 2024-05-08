@@ -11,7 +11,8 @@ import java.awt.event.KeyListener;
 import java.util.Timer;
 
 public class Game {
-    Scorekeeper scorekeeper;
+    Scorekeeper scorekeeper = new Scorekeeper();
+    Board b = new Board();
     //window properties
     static JFrame window;
     JLabel titleNameLabel, difNameLabel;
@@ -297,7 +298,7 @@ public class Game {
         if(youWonPanel != null) youWonPanel.setVisible(false);
     }
 
-    public static void createEasyGame() {
+    public  void createEasyGame() {
 
         isEasy = true;
         isMedium = false;
@@ -685,7 +686,7 @@ public class Game {
             hideDifMenu();
         }
     }
-    public static class EasyHandler implements ActionListener{
+    public  class EasyHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
             createEasyGame();
@@ -703,7 +704,7 @@ public class Game {
             createHardGame();
         }
     }
-    public static class CheckSetHandler implements ActionListener{
+    public  class CheckSetHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
             correctSetConfetti();
@@ -715,10 +716,10 @@ public class Game {
             createMainMenu();
         }
     }
-    public static class NspHandler implements ActionListener{
+    public  class NspHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
-            addNewCards(Board.addNewCards(deck));
+            addNewCards(b.addNewCards(deck));
         }
     }
 
@@ -741,7 +742,7 @@ public class Game {
         });
     }
 
-    public static void addMouseListenerToCardWithConfetti(JPanel cardRect, ArrayList<Card> selectedCards, Card card) {
+    public  void addMouseListenerToCardWithConfetti(JPanel cardRect, ArrayList<Card> selectedCards, Card card) {
         cardRect.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -756,7 +757,7 @@ public class Game {
                 // Check for a set when three cards are selected
                 if(selectedCards.size() <= 3) {
                     if (selectedCards.size() == 3) {
-                        if (Board.confirmSet(selectedCards.toArray(new Card[3]))) {
+                        if (b.confirmSet(selectedCards.toArray(new Card[3]))) {
                             System.out.println("SET!");
                             if(isEasy) points += 25;
                             else if(isMedium) points += 15;
@@ -778,12 +779,12 @@ public class Game {
         });
     }
 
-    public static void correctSetConfetti(){
+    public  void correctSetConfetti(){
 
         // Check for a set when three cards are selected
         if(selectedCards.size() <= 3) {
             if (selectedCards.size() == 3) {
-                if (Board.confirmSet(selectedCards.toArray(new Card[3]))) {
+                if (b.confirmSet(selectedCards.toArray(new Card[3]))) {
                     System.out.println("SET!");
 
                     if(isEasy) points += 25;
