@@ -27,7 +27,7 @@ public class Card {
 
     ///////////////////////////
 
-    public static final String imageLocation = "C:\\Location\\Of\\The\\Images\\"; //FILL THIS. This is the location of the images of the cards.
+    public static final String imageLocation = "/Users/Ric/Documents/GitHub/GroupProjectOOP/Cards/"; //FILL THIS. This is the location of the images of the cards.
     //For example, if you put the images I provided into a folder called "Cards" on your Desktop, your Path should look like this: "C:\\Users\\YourUsername\\Desktop\\Cards\\"
 
     ///////////////////////////
