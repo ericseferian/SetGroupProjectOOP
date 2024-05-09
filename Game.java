@@ -3,7 +3,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.TimerTask;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,10 +34,12 @@ public class Game {
     CheckSetHandler chHandler = new CheckSetHandler();
     MMHandler mmHandler = new MMHandler();
     NspHandler nspHandler = new NspHandler();
+    boolean windowIsVisible;
     static int points;
     static boolean isEasy;
     static boolean isMedium;
     static boolean isHard;
+    Timer timer;
 
 
     static JTextArea pointsArea;
@@ -244,21 +245,17 @@ public class Game {
 //        board.setDeck(Card.makeDeck());
 //        Collections.shuffle(board.getDeck());
     }
-    public void addNewCards() {
+    public void addTwelveNewCards() {
         if (board.getDeck().size() < 12) {
             createOutOfCardsScreen();
-
         }
         else {
             if (isEasy) {
-
                 cardPanel.removeAll();
                 cardPanel.revalidate();
-
                 //deal 12 new cards from deck as arraylist
                 ArrayList<Card> newCards = board.twoDArrayToList(board.getActiveCards());
                 for (Card card : newCards) {
-                    System.out.println(card.toString());
 
                     JPanel cardRect = new JPanel();
                     if (isEasy) addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);
@@ -274,7 +271,6 @@ public class Game {
                     cardPanel.add(cardRect);
 
                 }
-
                 cardPanel.repaint();
             }
             if (isMedium) {
@@ -325,7 +321,7 @@ public class Game {
                             con.remove(setPresentPanel);
                             window.repaint();
                         }
-                    }, 2000);
+                    }, 1000);
 
 
                 }
@@ -355,32 +351,44 @@ public class Game {
 
                 } else{
                     points -= 20;
-                    updatePointsLabel();
-                    setPresentPanel = new JPanel();
-                    setPresentPanel.setLayout(null);
-                    setPresentPanel.setBounds(625, 170, 250, 40);
-                    setPresentPanel.setBackground(Color.DARK_GRAY);
+                    if(points <= 0) {
+                        createGameOverScreen();
+                    }
+                    else {
+                        updatePointsLabel();
+                        setPresentPanel = new JPanel();
+                        setPresentPanel.setLayout(null);
+                        setPresentPanel.setBounds(625, 170, 250, 40);
+                        setPresentPanel.setBackground(Color.DARK_GRAY);
 
-                    JLabel spLabel = new JLabel("There Is a Set Present!");
-                    spLabel.setFont(new Font("Arial", Font.BOLD, 20));
-                    spLabel.setForeground(Color.RED);
-                    spLabel.setBounds(15, -5, 350, 50);
-                    setPresentPanel.add(spLabel);
-                    setPresentPanel.setVisible(true);
-                    con.add(setPresentPanel);
+                        JLabel spLabel = new JLabel("There Is a Set Present!");
+                        spLabel.setFont(new Font("Arial", Font.BOLD, 20));
+                        spLabel.setForeground(Color.RED);
+                        spLabel.setBounds(15, -5, 350, 50);
+                        setPresentPanel.add(spLabel);
+                        setPresentPanel.setVisible(true);
+                        con.add(setPresentPanel);
 
-                    window.repaint();
+                        window.repaint();
 
-
-                    Timer timer = new Timer();
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-
-                            con.remove(setPresentPanel);
-                            window.repaint();
+                        if (timer != null) {
+                            timer.cancel();
                         }
-                    }, 2000);
+
+                        timer = new Timer();
+                        timer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                SwingUtilities.invokeLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        con.remove(setPresentPanel);
+                                        window.repaint();
+                                    }
+                                });
+                            }
+                        }, 1000);
+                    }
 
 
                 }
@@ -388,6 +396,37 @@ public class Game {
             }
         }
     }
+    public void addThreeNewCards() {
+        if (board.getDeck().size() < 3) {
+            createOutOfCardsScreen();
+        }
+        else {
+                cardPanel.removeAll();
+                cardPanel.revalidate();
+
+                //deal 12 new cards from deck as arraylist
+                ArrayList<Card> newCards = board.twoDArrayToList(board.getActiveCards());
+                for (Card card : newCards) {
+
+                    JPanel cardRect = new JPanel();
+                    if (isEasy) addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);
+                    if (isMedium || isHard) addMouseListenerToCardWithoutConfetti(cardRect, selectedCards, card);
+                    cardRect.setPreferredSize(new Dimension(300, 200));
+                    cardRect.setBackground(Color.DARK_GRAY);
+
+                    ImageIcon cardImage = new ImageIcon(card.imagePath());
+                    JLabel cardLabel = new JLabel(cardImage);
+                    cardLabel.setBounds(0, 0, 500, 200);
+
+                    cardRect.add(cardLabel);
+                    cardPanel.add(cardRect);
+
+                }
+                cardPanel.repaint();
+            }
+    }
+
+
 
 
     public static void createDifMenu() {
@@ -770,6 +809,7 @@ public class Game {
         checkSetButtonPanel.setVisible(false);
         mmButtonPanel.setVisible(false);
         nspButtonPanel.setVisible(false);
+        if (setPresentPanel != null) setPresentPanel.setVisible(false);
 
         // Set the background color of the content pane
         window.getContentPane().setBackground(Color.BLACK);
@@ -918,7 +958,7 @@ public class Game {
     public  class NspHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
-            addNewCards();
+            addTwelveNewCards();
         }
     }
 
@@ -957,24 +997,25 @@ public class Game {
                 if(selectedCards.size() <= 3) {
                     if (selectedCards.size() == 3) {
                         if (board.confirmSet(selectedCards.toArray(new Card[3]))) {
-                            System.out.println("SET!");
                             board.replaceUsedCards(selectedCards.toArray(new Card[0]));
-                            addNewCards();
 
-                            if(isEasy) points += 25;
-                            else if(isMedium) points += 15;
-                            else if(isHard) points += 5;
-                            updatePointsLabel();
-                            System.out.println(points);
-                            if (points >= 200) createYouWonScreen();
-
+                            Timer timer = new Timer();
+                            timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    board.replaceUsedCards(selectedCards.toArray(new Card[0]));
+                                    addThreeNewCards();
+                                    if (isEasy) points += 25;
+                                    updatePointsLabel();
+                                }
+                            }, 600);
 
                             for (Component panel : cardPanel.getComponents()) {
                                 if (panel.getBackground() == Color.YELLOW) {
                                     panel.setBackground(Color.GREEN); // Highlight selected set in green
                                 }
                             }
-                        } else System.out.println("Not Set.");
+                        }
                         selectedCards.clear(); // Clear the selected cards list after checking for a set
                     }
                 }
@@ -990,17 +1031,22 @@ public class Game {
         if(selectedCards.size() <= 3) {
             if (selectedCards.size() == 3) {
                 if (board.confirmSet(selectedCards.toArray(new Card[3]))) {
-                    System.out.println("SET!");
+                    Timer timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            board.replaceUsedCards(selectedCards.toArray(new Card[0]));
+                            addThreeNewCards();
+                            if (isEasy) points += 25;
+                            else if (isMedium) points += 15;
+                            else if (isHard) points += 5;
+                            updatePointsLabel();
+                        }
+                    }, 600);
 
-                    if(isEasy) points += 25;
-                    else if(isMedium) points += 15;
-                    else if(isHard) points += 5;
-                    updatePointsLabel();
-                    System.out.println(points);
-                    if (points >= 200) createYouWonScreen();
                     for (Component panel : cardPanel.getComponents()) {
                         if (panel.getBackground() == Color.YELLOW) {
-                            panel.setBackground(Color.GREEN); // Highlight selected set in green
+                            panel.setBackground(Color.GREEN);
                         }
                     }
                 } else {
@@ -1009,10 +1055,8 @@ public class Game {
                         pointsPanel.repaint();
                         if (points <= 0) createGameOverScreen();
                     }
-                    System.out.println(points);
-                    System.out.println("Not Set.");
                 }
-                selectedCards.clear(); // Clear the selected cards list after checking for a set
+                selectedCards.clear();
             }
         }
     }
@@ -1125,7 +1169,6 @@ public class Game {
         addKonamiKeyListener();
     }
 }
-
 
 
 
