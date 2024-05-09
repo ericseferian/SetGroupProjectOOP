@@ -193,7 +193,6 @@ public class Board {
             //removed cards arraylist
             ArrayList<Card> removedCards = new ArrayList<Card>(Arrays.asList(cardsFromSet));
 
-
             int [] removedCardIndices = new int[removedCards.size()];
 
             //remove the cardsFromSet
@@ -206,8 +205,6 @@ public class Board {
 
                 removedCardIndices[i] = index;
                 activeCardsArrayList.remove(card);
-                System.out.println("removed cards here ");
-                System.out.println(card.toString());
 
             }
 
@@ -216,16 +213,11 @@ public class Board {
             ArrayList<Card> newCards = new ArrayList<Card>(Arrays.asList(addNewCards(deck)));
 
             for (int i = 0; i < newCards.size(); i++) {
-                System.out.println("removed card indices here: ");
-                System.out.println(removedCardIndices[i]);
-                
                 if (removedCardIndices[i] < activeCardsArrayList.size()) {
                     activeCardsArrayList.add(removedCardIndices[i], newCards.get(i));
                 }
                 else activeCardsArrayList.add(newCards.get(i));
                 }
-            System.out.println("active cards here: " );
-            System.out.println(activeCardsArrayList.toString());
 
 
             //add three new cards to replace
@@ -256,6 +248,15 @@ public class Board {
                 System.out.println(activeCards[i][j].toString());
             }
         }
+    }
+
+    public ArrayList<Card> getTwelveCardsFromDeck(ArrayList<Card> deck){
+        ArrayList<Card> twelveNewCards = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            twelveNewCards.add(this.deck.removeFirst());
+        }
+
+        return  twelveNewCards;
     }
 }
 
