@@ -1052,7 +1052,7 @@ public class Game {
                 } else {
                     if (isHard) {
                         points -= 15;
-                        pointsPanel.repaint();
+                        updatePointsLabel();
                         if (points <= 0) createGameOverScreen();
                     }
                 }
