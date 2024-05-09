@@ -244,7 +244,6 @@ public class Game {
 //        board.setDeck(Card.makeDeck());
 //        Collections.shuffle(board.getDeck());
     }
-
     public void addNewCards() {
         if (board.getDeck().size() < 12) {
             createOutOfCardsScreen();
