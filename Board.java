@@ -17,6 +17,14 @@ public class Board {
 
     private final int CARDS_IN_A_SET = 3;
 
+    public ArrayList<Card> twoDArrayToList(Card[][] twoDArray) {
+        ArrayList<Card> arrList = new ArrayList<>();
+        for (Card[] array : twoDArray) {
+            arrList.addAll(Arrays.asList(array));
+        }
+        return arrList;
+    }
+
 
     //getters return deep copies
     public ArrayList<Card> getDeck() {
@@ -191,7 +199,7 @@ public class Board {
 
     public Card[] addNewCards(ArrayList deck) {
         Card[] newCards = new Card[3];
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             newCards[i] = (Card) deck.removeFirst();
         }
         return newCards;

@@ -12,7 +12,10 @@ import java.awt.event.KeyListener;
 import java.util.Timer;
 
 public class Game {
-    Scorekeeper scorekeeper;
+    private Scorekeeper scorekeeper;
+
+    private Board board;
+
     //window properties
     static JFrame window;
     JLabel titleNameLabel, difNameLabel;
@@ -49,10 +52,14 @@ public class Game {
 
 
     //game properties
-    private static ArrayList<Card> deck;
+
 
     public Game() {
-        if (scorekeeper != null) scorekeeper.load();
+
+        this.board = new Board();
+        this.scorekeeper = new Scorekeeper();
+
+        scorekeeper.load();
 
         //create UI window
         window = new JFrame();
@@ -234,12 +241,12 @@ public class Game {
 
 
         //create card deck
-        this.deck = Card.makeDeck();
-        Collections.shuffle(this.deck);
+//        board.setDeck(Card.makeDeck());
+//        Collections.shuffle(board.getDeck());
     }
 
-    public static void addNewCards() {
-        if (deck.size() < 12) {
+    public void addNewCards() {
+        if (board.getDeck().size() < 12) {
             createOutOfCardsScreen();
 
         }
@@ -249,8 +256,10 @@ public class Game {
                 cardPanel.removeAll();
                 cardPanel.revalidate();
 
-                ArrayList<Card> newCards = generateCards(deck);
+                //deal 12 new cards from deck as arraylist
+                ArrayList<Card> newCards = board.twoDArrayToList(board.getActiveCards());
                 for (Card card : newCards) {
+                    System.out.println(card.toString());
 
                     JPanel cardRect = new JPanel();
                     if (isEasy) addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);
@@ -270,11 +279,11 @@ public class Game {
                 cardPanel.repaint();
             }
             if (isMedium) {
-                if (!Board.isSetPresent(Board.getActiveCards())) {
+                if (!board.isSetPresent(board.getActiveCards())) {
                     cardPanel.removeAll();
                     cardPanel.revalidate();
 
-                    ArrayList<Card> newCards = generateCards(deck);
+                    ArrayList<Card> newCards = board.twoDArrayToList(board.getActiveCards());
                     for (Card card : newCards) {
                         JPanel cardRect = new JPanel();
                         if (isEasy) addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);
@@ -323,11 +332,11 @@ public class Game {
                 }
             }
             if (isHard) {
-                if (!Board.isSetPresent(Board.getActiveCards())) {
+                if (!board.isSetPresent(board.getActiveCards())) {
                     cardPanel.removeAll();
                     cardPanel.revalidate();
 
-                    ArrayList<Card> newCards = generateCards(deck);
+                    ArrayList<Card> newCards = board.twoDArrayToList(board.getActiveCards());
                     for (Card card : newCards) {
                         JPanel cardRect = new JPanel();
                         if (isEasy) addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);
@@ -379,7 +388,7 @@ public class Game {
 
             }
         }
-        }
+    }
 
 
     public static void createDifMenu() {
@@ -435,8 +444,8 @@ public class Game {
         if(youWonPanel != null) youWonPanel.setVisible(false);
     }
 
-    public static void createEasyGame() {
-        if (deck.size() < 12) createOutOfCardsScreen();
+    public void createEasyGame() {
+        if (board.getDeck().size() < 12) createOutOfCardsScreen();
         points = 100;
         isEasy = true;
         isMedium = false;
@@ -467,7 +476,7 @@ public class Game {
 
 
         // Generate and add 12 cards to the panel
-        ArrayList<Card> cards = generateCards(deck);
+        ArrayList<Card> cards = board.twoDArrayToList(board.getActiveCards());
         for (Card card : cards) {
             JPanel cardRect = new JPanel();
             addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);
@@ -500,16 +509,16 @@ public class Game {
     // Method to update the points label in pointsPanel
     private static void updatePointsLabel() {
 
-            pointsPanel.removeAll(); // Remove existing components
-            JLabel pointsLabel = new JLabel("POINTS: " + points);
-            pointsLabel.setForeground(Color.BLACK); // Set text color
-            pointsPanel.add(pointsLabel); // Add updated label to pointsPanel
-            pointsPanel.revalidate(); // Refresh the panel
-            pointsPanel.repaint(); // Repaint the panel
+        pointsPanel.removeAll(); // Remove existing components
+        JLabel pointsLabel = new JLabel("POINTS: " + points);
+        pointsLabel.setForeground(Color.BLACK); // Set text color
+        pointsPanel.add(pointsLabel); // Add updated label to pointsPanel
+        pointsPanel.revalidate(); // Refresh the panel
+        pointsPanel.repaint(); // Repaint the panel
 
     }
 
-    public static void createMediumGame() {
+    public  void createMediumGame() {
         points = 100;
         isMedium = true;
         isEasy = false;
@@ -541,7 +550,7 @@ public class Game {
         //ImageIcon cardImage = new ImageIcon(Card.getImagePath());
 
         // Generate and add 12 cards to the panel
-        ArrayList<Card> cards = generateCards(deck);
+        ArrayList<Card> cards = board.twoDArrayToList(board.getActiveCards());
         for (Card card : cards) {
             JPanel cardRect = new JPanel();
             addMouseListenerToCardWithoutConfetti(cardRect, selectedCards, card);
@@ -570,7 +579,7 @@ public class Game {
 
     }
 
-    public static void createHardGame() {
+    public void createHardGame() {
         points = 100;
         isEasy = false;
         isMedium = false;
@@ -603,7 +612,7 @@ public class Game {
         //ImageIcon cardImage = new ImageIcon(Card.getImagePath());
 
         // Generate and add 12 cards to the panel
-        ArrayList<Card> cards = generateCards(deck);
+        ArrayList<Card> cards = board.twoDArrayToList(board.getActiveCards());
         for (Card card : cards) {
             JPanel cardRect = new JPanel();
             addMouseListenerToCardWithoutConfetti(cardRect, selectedCards, card);
@@ -877,25 +886,25 @@ public class Game {
             hideDifMenu();
         }
     }
-    public static class EasyHandler implements ActionListener{
+    public class EasyHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
             createEasyGame();
         }
     }
-    public static class MediumHandler implements ActionListener{
+    public  class MediumHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
             createMediumGame();
         }
     }
-    public static class HardHandler implements ActionListener{
+    public  class HardHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
             createHardGame();
         }
     }
-    public static class CheckSetHandler implements ActionListener{
+    public class CheckSetHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
             correctSetConfetti();
@@ -907,7 +916,7 @@ public class Game {
             createMainMenu();
         }
     }
-    public static class NspHandler implements ActionListener{
+    public  class NspHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
             addNewCards();
@@ -933,7 +942,7 @@ public class Game {
         });
     }
 
-    public static void addMouseListenerToCardWithConfetti(JPanel cardRect, ArrayList<Card> selectedCards, Card card) {
+    public void addMouseListenerToCardWithConfetti(JPanel cardRect, ArrayList<Card> selectedCards, Card card) {
         cardRect.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -948,8 +957,10 @@ public class Game {
                 // Check for a set when three cards are selected
                 if(selectedCards.size() <= 3) {
                     if (selectedCards.size() == 3) {
-                        if (Board.confirmSet(selectedCards.toArray(new Card[3]))) {
+                        if (board.confirmSet(selectedCards.toArray(new Card[3]))) {
                             System.out.println("SET!");
+                            board.replaceUsedCards(selectedCards.toArray(new Card[0]));
+                            addNewCards();
 
                             if(isEasy) points += 25;
                             else if(isMedium) points += 15;
@@ -974,12 +985,12 @@ public class Game {
         });
     }
 
-    public static void correctSetConfetti(){
+    public void correctSetConfetti(){
 
         // Check for a set when three cards are selected
         if(selectedCards.size() <= 3) {
             if (selectedCards.size() == 3) {
-                if (Board.confirmSet(selectedCards.toArray(new Card[3]))) {
+                if (board.confirmSet(selectedCards.toArray(new Card[3]))) {
                     System.out.println("SET!");
 
                     if(isEasy) points += 25;
@@ -1115,6 +1126,7 @@ public class Game {
         addKonamiKeyListener();
     }
 }
+
 
 
 
