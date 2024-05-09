@@ -176,25 +176,70 @@ public class Board {
     //when a set is made, those cards should be removed and replaced.
     //if the board has greater than 12 cards, do nothing.
 
-    public void replaceUsedCards(Card[] CardsFromSet) {
+
+    //why does the order change when a set is removed.
+    // replace the used cards at the same position they came from
+
+    //get the index of the cards being removed
+    //make a new arraylist of the removed cards and get their index
+    // add the new cards at the indicies of the removed cards
+
+    public void replaceUsedCards(Card[] cardsFromSet) {
         if (boardWidth * BOARD_HEIGHT == 12) {
             Card[][] activeCards = getActiveCards();
             //flatten the 2D board array into a regular array of cards, and produce an arraylist
             ArrayList<Card> activeCardsArrayList = new ArrayList<Card>(Arrays.asList(cardSingleArray(activeCards)));
-            for (Card card : CardsFromSet) {
+
+            //removed cards arraylist
+            ArrayList<Card> removedCards = new ArrayList<Card>(Arrays.asList(cardsFromSet));
+
+
+            int [] removedCardIndices = new int[removedCards.size()];
+
+            //remove the cardsFromSet
+            //get indices of removed cards (this needs to come from activeCardsArrayList
+
+            for (int i = 0; i < cardsFromSet.length; i++) {
+
+                Card card = cardsFromSet[i];
+                int index = activeCardsArrayList.indexOf(card);
+
+                removedCardIndices[i] = index;
                 activeCardsArrayList.remove(card);
+                System.out.println("removed cards here ");
+                System.out.println(card.toString());
+
             }
+
+            //arraylist of new cards
+            //we need to add the new cards at the indices of the old cards
+            ArrayList<Card> newCards = new ArrayList<Card>(Arrays.asList(addNewCards(deck)));
+
+            for (int i = 0; i < newCards.size(); i++) {
+                System.out.println("removed card indices here: ");
+                System.out.println(removedCardIndices[i]);
+                
+                if (removedCardIndices[i] < activeCardsArrayList.size()) {
+                    activeCardsArrayList.add(removedCardIndices[i], newCards.get(i));
+                }
+                else activeCardsArrayList.add(newCards.get(i));
+                }
+            System.out.println("active cards here: " );
+            System.out.println(activeCardsArrayList.toString());
+
+
             //add three new cards to replace
-            activeCardsArrayList.addAll(Arrays.asList(addNewCards(deck)));
+//            activeCardsArrayList.addAll(Arrays.asList(addNewCards(deck)));
             Card[][] newActiveCards = new Card[boardWidth][BOARD_HEIGHT];
             for (int i = 0; i < boardWidth; i++) {
                 for (int j = 0; j < BOARD_HEIGHT; j++) {
+
+                    //removeFirst to getFirst
                     newActiveCards[i][j] = activeCardsArrayList.removeFirst();
                 }
             }
             setActiveCards(newActiveCards);
         }
-
     }
 
     public Card[] addNewCards(ArrayList deck) {
