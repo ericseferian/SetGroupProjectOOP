@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -11,13 +12,12 @@ import java.awt.event.KeyListener;
 import java.util.Timer;
 
 public class Game {
-    Scorekeeper scorekeeper = new Scorekeeper();
-    Board b = new Board();
+    Scorekeeper scorekeeper;
     //window properties
     static JFrame window;
     JLabel titleNameLabel, difNameLabel;
     static JPanel titleNamePanel, pointsPanel, cardPanel, difNamePanel, rulesPanel;
-    static JPanel startButtonPanel, rulesButtonPanel, exitButtonPanel, easyButtonPanel, mediumButtonPanel, hardButtonPanel, backButtonPanel, checkSetButtonPanel, mmButtonPanel, gameOverPanel, youWonPanel, nspButtonPanel;
+    static JPanel startButtonPanel, rulesButtonPanel, exitButtonPanel, easyButtonPanel, mediumButtonPanel, hardButtonPanel, backButtonPanel, checkSetButtonPanel, mmButtonPanel, gameOverPanel, youWonPanel, nspButtonPanel, oocPanel, setPresentPanel;
     JButton startButton, rulesButton, exitButton, easyButton, mediumButton, hardButton, backButton, checkSetButton, mmButton, nspButton;
     static Container con;
     Font titleFont = new Font("Times New Roman", Font.PLAIN, 90);
@@ -32,15 +32,13 @@ public class Game {
     CheckSetHandler chHandler = new CheckSetHandler();
     MMHandler mmHandler = new MMHandler();
     NspHandler nspHandler = new NspHandler();
-    static int points = 100; // Placeholder
+    static int points;
     static boolean isEasy;
     static boolean isMedium;
     static boolean isHard;
 
 
-
     static JTextArea pointsArea;
-    ImageIcon originalIcon = new ImageIcon("C:\\Users\\Mompas\\Downloads\\cover.png");
 
     // Calculate the desired width and height for the scaled image
     static int cardWidth = 400;  // Adjust as needed
@@ -50,19 +48,18 @@ public class Game {
     private static ArrayList<JPanel> cardPanels = new ArrayList<>();
 
 
-
     //game properties
     private static ArrayList<Card> deck;
 
     public Game() {
-        scorekeeper.load();
+        if (scorekeeper != null) scorekeeper.load();
 
         //create UI window
         window = new JFrame();
         window.setSize(1600, 1200);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.getContentPane().setBackground(Color.black);
-        window.setLayout(null); //will change as needed.
+        window.setLayout(null);
         con = window.getContentPane();
 
         //"SET"
@@ -100,7 +97,6 @@ public class Game {
         rulesButton.addActionListener(rbHandler);
 
 
-
         //Exit button
         exitButtonPanel = new JPanel();
         exitButtonPanel.setBounds(670, 950, 200, 100);
@@ -111,7 +107,6 @@ public class Game {
         exitButton.setFont(normalFont);
         exitButton.setFocusPainted(false);
         exitButton.addActionListener(ebHandler);
-
 
 
         //Easy
@@ -243,10 +238,149 @@ public class Game {
         Collections.shuffle(this.deck);
     }
 
-    public static void addNewCards(Card[] newCards) {
+    public static void addNewCards() {
+        if (deck.size() < 12) {
+            createOutOfCardsScreen();
+
+        }
+        else {
+            if (isEasy) {
+
+                cardPanel.removeAll();
+                cardPanel.revalidate();
+
+                ArrayList<Card> newCards = generateCards(deck);
+                for (Card card : newCards) {
+
+                    JPanel cardRect = new JPanel();
+                    if (isEasy) addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);
+                    if (isMedium || isHard) addMouseListenerToCardWithoutConfetti(cardRect, selectedCards, card);
+                    cardRect.setPreferredSize(new Dimension(300, 200));
+                    cardRect.setBackground(Color.DARK_GRAY);
+
+                    ImageIcon cardImage = new ImageIcon(card.imagePath());
+                    JLabel cardLabel = new JLabel(cardImage);
+                    cardLabel.setBounds(0, 0, 500, 200);
+
+                    cardRect.add(cardLabel);
+                    cardPanel.add(cardRect);
+
+                }
+
+                cardPanel.repaint();
+            }
+            if (isMedium) {
+                if (!Board.isSetPresent(Board.getActiveCards())) {
+                    cardPanel.removeAll();
+                    cardPanel.revalidate();
+
+                    ArrayList<Card> newCards = generateCards(deck);
+                    for (Card card : newCards) {
+                        JPanel cardRect = new JPanel();
+                        if (isEasy) addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);
+                        if (isMedium || isHard) addMouseListenerToCardWithoutConfetti(cardRect, selectedCards, card);
+                        cardRect.setPreferredSize(new Dimension(300, 200));
+                        cardRect.setBackground(Color.DARK_GRAY);
+
+                        ImageIcon cardImage = new ImageIcon(card.imagePath());
+                        JLabel cardLabel = new JLabel(cardImage);
+                        cardLabel.setBounds(0, 0, 500, 200);
+
+                        cardRect.add(cardLabel);
+                        cardPanel.add(cardRect);
+                    }
+
+                    cardPanel.repaint();
+                }
+                else {
+                    setPresentPanel = new JPanel();
+                    setPresentPanel.setLayout(null);
+                    setPresentPanel.setBounds(625, 170, 250, 40);
+                    setPresentPanel.setBackground(Color.DARK_GRAY);
+
+                    JLabel spLabel = new JLabel("There Is a Set Present!");
+                    spLabel.setFont(new Font("Arial", Font.BOLD, 20));
+                    spLabel.setForeground(Color.RED);
+                    spLabel.setBounds(15, -5, 350, 50);
+                    setPresentPanel.add(spLabel);
+                    setPresentPanel.setVisible(true);
+                    con.add(setPresentPanel);
+
+                    window.repaint();
 
 
-    }
+                    Timer timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+
+                            con.remove(setPresentPanel);
+                            window.repaint();
+                        }
+                    }, 2000);
+
+
+                }
+            }
+            if (isHard) {
+                if (!Board.isSetPresent(Board.getActiveCards())) {
+                    cardPanel.removeAll();
+                    cardPanel.revalidate();
+
+                    ArrayList<Card> newCards = generateCards(deck);
+                    for (Card card : newCards) {
+                        JPanel cardRect = new JPanel();
+                        if (isEasy) addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);
+                        if (isMedium || isHard) addMouseListenerToCardWithoutConfetti(cardRect, selectedCards, card);
+                        cardRect.setPreferredSize(new Dimension(300, 200));
+                        cardRect.setBackground(Color.DARK_GRAY);
+
+                        ImageIcon cardImage = new ImageIcon(card.imagePath());
+                        JLabel cardLabel = new JLabel(cardImage);
+                        cardLabel.setBounds(0, 0, 500, 200);
+
+                        cardRect.add(cardLabel);
+                        cardPanel.add(cardRect);
+                    }
+
+                    cardPanel.repaint();
+
+                } else{
+                    points -= 20;
+                    updatePointsLabel();
+                    setPresentPanel = new JPanel();
+                    setPresentPanel.setLayout(null);
+                    setPresentPanel.setBounds(625, 170, 250, 40);
+                    setPresentPanel.setBackground(Color.DARK_GRAY);
+
+                    JLabel spLabel = new JLabel("There Is a Set Present!");
+                    spLabel.setFont(new Font("Arial", Font.BOLD, 20));
+                    spLabel.setForeground(Color.RED);
+                    spLabel.setBounds(15, -5, 350, 50);
+                    setPresentPanel.add(spLabel);
+                    setPresentPanel.setVisible(true);
+                    con.add(setPresentPanel);
+
+                    window.repaint();
+
+
+                    Timer timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+
+                            con.remove(setPresentPanel);
+                            window.repaint();
+                        }
+                    }, 2000);
+
+
+                }
+
+            }
+        }
+        }
+
 
     public static void createDifMenu() {
         easyButtonPanel.setVisible(true);
@@ -292,14 +426,18 @@ public class Game {
         cardPanel.setVisible(false);
         window.getContentPane().setBackground(Color.BLACK);
         checkSetButtonPanel.setVisible(false);
-        pointsPanel.setVisible(false);
+        pointsPanel.setVisible(false); // Set visibility to false
+        pointsPanel.revalidate(); // Trigger layout update
+        pointsPanel.repaint();
+
         nspButtonPanel.setVisible(false);
         if(gameOverPanel != null) gameOverPanel.setVisible(false);
         if(youWonPanel != null) youWonPanel.setVisible(false);
     }
 
-    public  void createEasyGame() {
-
+    public static void createEasyGame() {
+        if (deck.size() < 12) createOutOfCardsScreen();
+        points = 100;
         isEasy = true;
         isMedium = false;
         isHard = false;
@@ -318,12 +456,7 @@ public class Game {
 
         window.getContentPane().setBackground(Color.GRAY);
 
-        pointsPanel = new JPanel();
-        pointsPanel.setBounds(650,50, 800,400);
-        pointsPanel.setSize(200,30);
-        pointsPanel.setVisible(true);
-        pointsPanel.setBackground(Color.WHITE);
-        con.add(pointsPanel);
+
 
 
         cardPanel = new JPanel();
@@ -338,7 +471,7 @@ public class Game {
         for (Card card : cards) {
             JPanel cardRect = new JPanel();
             addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);
-            cardRect.setPreferredSize(new Dimension(300, 200)); // Set size of each rectangle (Doesn't work and idk why)
+            cardRect.setPreferredSize(new Dimension(300, 200));
             cardRect.setBackground(Color.DARK_GRAY);
 
 
@@ -351,23 +484,33 @@ public class Game {
         }
 
 
+
+
         con.add(cardPanel);
 
 
+        pointsPanel = new JPanel();
+        pointsPanel.setBounds(650, 50, 200, 30);
+        pointsPanel.setBackground(Color.WHITE);
+        con.add(pointsPanel); // Add pointsPanel to the container
 
-        JTextArea textArea = new JTextArea(" POINTS: " + points);
-        textArea.setBounds(0,200,800,400);
-        textArea.setLayout(null);
-        textArea.setSize(1000,2000);
-        textArea.setBackground(Color.BLACK);
-        textArea.setForeground(Color.WHITE);
-        textArea.setVisible(true);
-        //textArea.setLineWrap(true);
-        pointsPanel.add(textArea);
+        updatePointsLabel();
+
+    }
+    // Method to update the points label in pointsPanel
+    private static void updatePointsLabel() {
+
+            pointsPanel.removeAll(); // Remove existing components
+            JLabel pointsLabel = new JLabel("POINTS: " + points);
+            pointsLabel.setForeground(Color.BLACK); // Set text color
+            pointsPanel.add(pointsLabel); // Add updated label to pointsPanel
+            pointsPanel.revalidate(); // Refresh the panel
+            pointsPanel.repaint(); // Repaint the panel
 
     }
 
     public static void createMediumGame() {
+        points = 100;
         isMedium = true;
         isEasy = false;
         isHard = false;
@@ -386,12 +529,7 @@ public class Game {
 
         window.getContentPane().setBackground(Color.GRAY);
 
-        pointsPanel = new JPanel();
-        pointsPanel.setBounds(650,50, 800,400);
-        pointsPanel.setSize(200,30);
-        pointsPanel.setVisible(true);
-        pointsPanel.setBackground(Color.WHITE);
-        con.add(pointsPanel);
+
 
 
         cardPanel = new JPanel();
@@ -423,19 +561,17 @@ public class Game {
         con.add(cardPanel);
 
 
-        pointsArea = new JTextArea(" POINTS: " + points);
-        pointsArea.setBounds(0,200,800,400);
-        pointsArea.setLayout(null);
-        pointsArea.setSize(1000,2000);
-        pointsArea.setBackground(Color.BLACK);
-        pointsArea.setForeground(Color.WHITE);
-        pointsArea.setVisible(true);
-        //textArea.setLineWrap(true);
-        pointsPanel.add(pointsArea);
+        pointsPanel = new JPanel();
+        pointsPanel.setBounds(650, 50, 200, 30);
+        pointsPanel.setBackground(Color.WHITE);
+        con.add(pointsPanel); // Add pointsPanel to the container
+
+        updatePointsLabel();
 
     }
 
     public static void createHardGame() {
+        points = 100;
         isEasy = false;
         isMedium = false;
         isHard = true;
@@ -456,12 +592,6 @@ public class Game {
 
         window.getContentPane().setBackground(Color.GRAY);
 
-        pointsPanel = new JPanel();
-        pointsPanel.setBounds(650,50, 800,400);
-        pointsPanel.setSize(200,30);
-        pointsPanel.setVisible(true);
-        pointsPanel.setBackground(Color.WHITE);
-        con.add(pointsPanel);
 
 
         cardPanel = new JPanel();
@@ -494,15 +624,12 @@ public class Game {
         con.add(cardPanel);
 
 
-        JTextArea textArea = new JTextArea(" POINTS: " + points);
-        textArea.setBounds(0,200,800,400);
-        textArea.setLayout(null);
-        textArea.setSize(1000,2000);
-        textArea.setBackground(Color.BLACK);
-        textArea.setForeground(Color.WHITE);
-        textArea.setVisible(true);
-        //textArea.setLineWrap(true);
-        pointsPanel.add(textArea);
+        pointsPanel = new JPanel();
+        pointsPanel.setBounds(650, 50, 200, 30);
+        pointsPanel.setBackground(Color.WHITE);
+        con.add(pointsPanel); // Add pointsPanel to the container
+
+        updatePointsLabel();
 
     }
 
@@ -545,13 +672,21 @@ public class Game {
                 " (All 4 features being constant would imply that the three cards in the set are identical, which is " +
                 " impossible since no cards in the Set deck are identical.)\n\n" +
                 " There are three difficulties. Easy, Medium, and Hard.\n\n" +
-                " Easy: Automatic set detection, therefore no incorrect set penalty.\n" +
+                " Easy:\n" +
+                " Automatic set detection. \n" +
+                " No incorrect set penalty.\n" +
+                " No penalty for \"No Set Present\" if incorrect.\n" +
                 " +25 Points per each correct set.\n\n" +
-                " Medium: Manual set detection, but no penalty for incorrect sets.\n" +
+                " Medium:\n" +
+                " Manual set detection. \n" +
+                " -5 Incorrect set penalty.\n" +
+                " No penalty for \"No Set Present\" if incorrect.\n" +
                 " +15 Points per each correct set.\n\n" +
-                " Hard: Manual set detection, with penalty for each incorrect set.\n" +
-                " +5 Points per each correct set.\n" +
-                " -15 per each incorrect set");
+                " Hard:\n" +
+                " Manual set detection. \n" +
+                " -15 incorrect set penalty.\n" +
+                " -20 penalty for \"No Set Present\" if incorrect.\n" +
+                " +5 Points per each correct set.");
         rulesTextArea.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         rulesTextArea.setWrapStyleWord(true);
         rulesTextArea.setLineWrap(true);
@@ -559,6 +694,60 @@ public class Game {
         scrollPane.setViewportView(rulesTextArea);
 
         rulesPanel.setVisible(true);
+    }
+
+    public static void createOutOfCardsScreen() {
+        // Hide unnecessary panels
+        startButtonPanel.setVisible(false);
+        titleNamePanel.setVisible(false);
+        rulesButtonPanel.setVisible(false);
+        exitButtonPanel.setVisible(false);
+        backButtonPanel.setVisible(false);
+        cardPanel.setVisible(false);
+        pointsPanel.setVisible(false);
+        checkSetButtonPanel.setVisible(false);
+        mmButtonPanel.setVisible(false);
+        nspButtonPanel.setVisible(false);
+
+        // Set the background color of the content pane
+        window.getContentPane().setBackground(Color.BLACK);
+
+        // Create a main panel for the game over screen content
+        oocPanel = new JPanel();
+        oocPanel.setLayout(null);
+        oocPanel.setBounds(100, 66, 1400, 1000);
+        oocPanel.setBackground(Color.DARK_GRAY);
+        window.add(oocPanel);
+
+        // Create a JLabel for the game over message
+        JLabel oocLabel = new JLabel("Out Of Cards!");
+        oocLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        oocLabel.setForeground(Color.WHITE);
+        oocLabel.setBounds(600, 150, 200, 50);
+        oocPanel.add(oocLabel);
+        JLabel oocLabel2 = new JLabel("Score: " + points);
+        oocLabel2.setFont(new Font("Arial", Font.PLAIN, 30));
+        oocLabel2.setBackground(Color.BLACK);
+        oocLabel2.setForeground(Color.GREEN);
+        oocLabel2.setBounds(620, 250, 200, 50);
+        oocPanel.add(oocLabel2);
+
+        // Create a JButton for returning to the main menu
+        JButton exitButton = new JButton("Exit");
+        exitButton.setFocusPainted(false);
+        exitButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        exitButton.setBounds(600, 600, 200, 50);
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exitGame();
+            }
+        });
+        oocPanel.add(exitButton);
+
+        // Make the game over screen visible
+        oocPanel.setVisible(true);
+
     }
 
     public static void createGameOverScreen() {
@@ -572,6 +761,7 @@ public class Game {
         pointsPanel.setVisible(false);
         checkSetButtonPanel.setVisible(false);
         mmButtonPanel.setVisible(false);
+        nspButtonPanel.setVisible(false);
 
         // Set the background color of the content pane
         window.getContentPane().setBackground(Color.BLACK);
@@ -619,6 +809,7 @@ public class Game {
         pointsPanel.setVisible(false);
         checkSetButtonPanel.setVisible(false);
         mmButtonPanel.setVisible(false);
+        nspButtonPanel.setVisible(false);
 
         // Set the background color of the content pane
         window.getContentPane().setBackground(Color.WHITE);
@@ -686,7 +877,7 @@ public class Game {
             hideDifMenu();
         }
     }
-    public  class EasyHandler implements ActionListener{
+    public static class EasyHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
             createEasyGame();
@@ -704,7 +895,7 @@ public class Game {
             createHardGame();
         }
     }
-    public  class CheckSetHandler implements ActionListener{
+    public static class CheckSetHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
             correctSetConfetti();
@@ -716,10 +907,10 @@ public class Game {
             createMainMenu();
         }
     }
-    public  class NspHandler implements ActionListener{
+    public static class NspHandler implements ActionListener{
 
         public void actionPerformed(ActionEvent event){
-            addNewCards(b.addNewCards(deck));
+            addNewCards();
         }
     }
 
@@ -729,20 +920,20 @@ public class Game {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
-                    if (cardRect.getBackground() == Color.DARK_GRAY) {
-                        cardRect.setBackground(Color.YELLOW); // Change to yellow on click
-                        selectedCards.add(card); // Add the clicked card to the selected cards list
-                    } else if (cardRect.getBackground() == Color.YELLOW) {
-                        cardRect.setBackground(Color.DARK_GRAY); // Change back to gray if already yellow
-                        selectedCards.remove(card); // Remove the un-clicked card from the selected cards list
-                    }
+                if (cardRect.getBackground() == Color.DARK_GRAY) {
+                    cardRect.setBackground(Color.YELLOW); // Change to yellow on click
+                    selectedCards.add(card); // Add the clicked card to the selected cards list
+                } else if (cardRect.getBackground() == Color.YELLOW) {
+                    cardRect.setBackground(Color.DARK_GRAY); // Change back to gray if already yellow
+                    selectedCards.remove(card); // Remove the un-clicked card from the selected cards list
+                }
 
 
             }
         });
     }
 
-    public  void addMouseListenerToCardWithConfetti(JPanel cardRect, ArrayList<Card> selectedCards, Card card) {
+    public static void addMouseListenerToCardWithConfetti(JPanel cardRect, ArrayList<Card> selectedCards, Card card) {
         cardRect.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -757,12 +948,16 @@ public class Game {
                 // Check for a set when three cards are selected
                 if(selectedCards.size() <= 3) {
                     if (selectedCards.size() == 3) {
-                        if (b.confirmSet(selectedCards.toArray(new Card[3]))) {
+                        if (Board.confirmSet(selectedCards.toArray(new Card[3]))) {
                             System.out.println("SET!");
+
                             if(isEasy) points += 25;
                             else if(isMedium) points += 15;
                             else if(isHard) points += 5;
+                            updatePointsLabel();
+                            System.out.println(points);
                             if (points >= 200) createYouWonScreen();
+
 
                             for (Component panel : cardPanel.getComponents()) {
                                 if (panel.getBackground() == Color.YELLOW) {
@@ -779,19 +974,20 @@ public class Game {
         });
     }
 
-    public  void correctSetConfetti(){
+    public static void correctSetConfetti(){
 
         // Check for a set when three cards are selected
         if(selectedCards.size() <= 3) {
             if (selectedCards.size() == 3) {
-                if (b.confirmSet(selectedCards.toArray(new Card[3]))) {
+                if (Board.confirmSet(selectedCards.toArray(new Card[3]))) {
                     System.out.println("SET!");
 
                     if(isEasy) points += 25;
                     else if(isMedium) points += 15;
                     else if(isHard) points += 5;
+                    updatePointsLabel();
+                    System.out.println(points);
                     if (points >= 200) createYouWonScreen();
-                    JTextArea textArea = new JTextArea(" POINTS: " + points);
                     for (Component panel : cardPanel.getComponents()) {
                         if (panel.getBackground() == Color.YELLOW) {
                             panel.setBackground(Color.GREEN); // Highlight selected set in green
@@ -800,6 +996,7 @@ public class Game {
                 } else {
                     if (isHard) {
                         points -= 15;
+                        pointsPanel.repaint();
                         if (points <= 0) createGameOverScreen();
                     }
                     System.out.println(points);
@@ -916,8 +1113,8 @@ public class Game {
     public static void main(String[] args) {
         Game game = new Game();
         addKonamiKeyListener();
-        }
     }
+}
 
 
 
