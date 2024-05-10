@@ -27,6 +27,7 @@ public class Scorekeeper {
             if (Game.points > highScore){
                 pw.println(Game.points);
             }
+            else pw.println("100");
             pw.close();
 
         } catch (FileNotFoundException e) {
