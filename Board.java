@@ -122,7 +122,6 @@ public class Board {
         }
 
 
-
         // Check if all attributes are different
         boolean allDifferent = colors.size() == 3 && numbers.size() == 3 &&
                 shapes.size() == 3 && shadings.size() == 3;
@@ -208,12 +207,14 @@ public class Board {
             }
         }
     }
-    public ArrayList<Card> getTwelveCardsFromDeck(ArrayList<Card> deck){
+
+    public ArrayList<Card> getTwelveCardsFromDeck(ArrayList<Card> deck) {
         ArrayList<Card> twelveNewCards = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             twelveNewCards.add(this.deck.removeFirst());
         }
 
-        return  twelveNewCards;
+        return twelveNewCards;
     }
 }
+
