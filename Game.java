@@ -1035,6 +1035,7 @@ public class Game {
         if(selectedCards.size() <= 3) {
             if (selectedCards.size() == 3) {
                 if (board.confirmSet(selectedCards.toArray(new Card[3]))) {
+                    board.replaceUsedCards(selectedCards.toArray(new Card[0]));
                     Timer timer = new Timer();
                     timer.schedule(new TimerTask() {
                         @Override
