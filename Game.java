@@ -11,7 +11,7 @@ import java.awt.event.KeyListener;
 import java.util.Timer;
 
 public class Game {
-    private Scorekeeper scorekeeper;
+    private static Scorekeeper scorekeeper;
 
     private Board board;
 
@@ -163,7 +163,7 @@ public class Game {
         backButtonPanel.setBackground(Color.BLACK);
         backButton = new JButton("Back");
         backButton.setBackground(Color.BLACK);
-        backButton.setForeground(Color.BLACK);
+        backButton.setForeground(Color.WHITE);
         backButton.setFont(normalFont);
         backButton.setFocusPainted(false);
         backButton.addActionListener(bbHandler);
@@ -747,6 +747,7 @@ public class Game {
 
     public static void createOutOfCardsScreen() {
         // Hide unnecessary panels
+        scorekeeper.save();
         startButtonPanel.setVisible(false);
         titleNamePanel.setVisible(false);
         rulesButtonPanel.setVisible(false);
