@@ -66,7 +66,7 @@ public class Game {
         window = new JFrame();
         window.setSize(1600, 1200);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.getContentPane().setBackground(Color.black);
+        window.getContentPane().setBackground(Color.BLACK);
         window.setLayout(null);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int centerX = (int) ((screenSize.getWidth() - window.getWidth()) / 2);
@@ -77,9 +77,9 @@ public class Game {
         //"SET"
         titleNamePanel = new JPanel();
         titleNamePanel.setBounds(475, 200, 600, 150);
-        titleNamePanel.setBackground(Color.black);
+        titleNamePanel.setBackground(Color.BLACK);
         titleNameLabel = new JLabel("SET");
-        titleNameLabel.setForeground(Color.white);
+        titleNameLabel.setForeground(Color.WHITE);
         titleNameLabel.setFont(titleFont);
 
         con.add(titleNamePanel);
@@ -88,9 +88,9 @@ public class Game {
         //Start button
         startButtonPanel = new JPanel();
         startButtonPanel.setBounds(670, 800, 200, 100);
-        startButtonPanel.setBackground(Color.black);
+        startButtonPanel.setBackground(Color.BLACK);
         startButton = new JButton("PLAY");
-        startButton.setBackground(Color.black);
+        startButton.setBackground(Color.BLACK);
         startButton.setForeground(Color.white);
         startButton.setFont(normalFont);
         startButton.setFocusPainted(false);
@@ -100,10 +100,10 @@ public class Game {
         //Rules button
         rulesButtonPanel = new JPanel();
         rulesButtonPanel.setBounds(670, 850, 200, 100);
-        rulesButtonPanel.setBackground(Color.black);
+        rulesButtonPanel.setBackground(Color.BLACK);
         rulesButton = new JButton("RULES");
-        rulesButton.setBackground(Color.black);
-        rulesButton.setForeground(Color.white);
+        rulesButton.setBackground(Color.BLACK);
+        rulesButton.setForeground(Color.WHITE);
         rulesButton.setFont(normalFont);
         rulesButton.setFocusPainted(false);
         rulesButton.addActionListener(rbHandler);
@@ -112,10 +112,10 @@ public class Game {
         //Exit button
         exitButtonPanel = new JPanel();
         exitButtonPanel.setBounds(670, 950, 200, 100);
-        exitButtonPanel.setBackground(Color.black);
+        exitButtonPanel.setBackground(Color.BLACK);
         exitButton = new JButton("EXIT");
-        exitButton.setBackground(Color.black);
-        exitButton.setForeground(Color.white);
+        exitButton.setBackground(Color.BLACK);
+        exitButton.setForeground(Color.WHITE);
         exitButton.setFont(normalFont);
         exitButton.setFocusPainted(false);
         exitButton.addActionListener(ebHandler);
@@ -124,10 +124,10 @@ public class Game {
         //Easy
         easyButtonPanel = new JPanel();
         easyButtonPanel.setBounds(670, 725, 200, 50);
-        easyButtonPanel.setBackground(Color.black);
+        easyButtonPanel.setBackground(Color.BLACK);
         easyButton = new JButton("Easy");
-        easyButton.setBackground(Color.black);
-        easyButton.setForeground(Color.white);
+        easyButton.setBackground(Color.BLACK);
+        easyButton.setForeground(Color.WHITE);
         easyButton.setFont(normalFont);
         easyButton.setFocusPainted(false);
         easyButton.addActionListener(ezHandler);
@@ -138,8 +138,8 @@ public class Game {
         mediumButtonPanel.setBounds(670, 790, 200, 50);
         mediumButtonPanel.setBackground(Color.black);
         mediumButton = new JButton("Medium");
-        mediumButton.setBackground(Color.black);
-        mediumButton.setForeground(Color.white);
+        mediumButton.setBackground(Color.BLACK);
+        mediumButton.setForeground(Color.WHITE);
         mediumButton.setFont(normalFont);
         mediumButton.setFocusPainted(false);
         mediumButton.addActionListener(mdHandler);
@@ -148,10 +148,10 @@ public class Game {
         //Hard
         hardButtonPanel = new JPanel();
         hardButtonPanel.setBounds(670, 855, 200, 50);
-        hardButtonPanel.setBackground(Color.black);
+        hardButtonPanel.setBackground(Color.BLACK);
         hardButton = new JButton("Hard");
-        hardButton.setBackground(Color.black);
-        hardButton.setForeground(Color.white);
+        hardButton.setBackground(Color.BLACK);
+        hardButton.setForeground(Color.WHITE);
         hardButton.setFont(normalFont);
         hardButton.setFocusPainted(false);
         hardButton.addActionListener(hdHandler);
@@ -160,10 +160,10 @@ public class Game {
         //Back
         backButtonPanel = new JPanel();
         backButtonPanel.setBounds(670, 1000, 200, 50);
-        backButtonPanel.setBackground(Color.black);
+        backButtonPanel.setBackground(Color.BLACK);
         backButton = new JButton("Back");
-        backButton.setBackground(Color.black);
-        backButton.setForeground(Color.white);
+        backButton.setBackground(Color.BLACK);
+        backButton.setForeground(Color.BLACK);
         backButton.setFont(normalFont);
         backButton.setFocusPainted(false);
         backButton.addActionListener(bbHandler);
@@ -172,9 +172,9 @@ public class Game {
         //"Select Difficulty"
         difNamePanel = new JPanel();
         difNamePanel.setBounds(300, 300, 1000, 150);
-        difNamePanel.setBackground(Color.black);
+        difNamePanel.setBackground(Color.BLACK);
         difNameLabel = new JLabel("Select Difficulty");
-        difNameLabel.setForeground(Color.white);
+        difNameLabel.setForeground(Color.WHITE);
         difNameLabel.setFont(titleFont);
         difNamePanel.setVisible(false);
         difNamePanel.add(difNameLabel);
@@ -186,8 +186,8 @@ public class Game {
         checkSetButtonPanel.setBounds(700, 120, 100, 52);
         checkSetButtonPanel.setBackground(Color.GRAY);
         checkSetButton = new JButton("SET!");
-        checkSetButton.setBackground(Color.green);
-        checkSetButton.setForeground(Color.black);
+        checkSetButton.setBackground(Color.GREEN);
+        checkSetButton.setForeground(Color.BLACK);
         checkSetButton.setFont(normalFont);
         checkSetButton.setFocusPainted(false);
         checkSetButton.addActionListener(chHandler);
@@ -198,8 +198,8 @@ public class Game {
         nspButtonPanel.setBounds(1170, 100, 200, 52);
         nspButtonPanel.setBackground(Color.GRAY);
         nspButton = new JButton("No Set Present");
-        nspButton.setBackground(Color.red);
-        nspButton.setForeground(Color.black);
+        nspButton.setBackground(Color.RED);
+        nspButton.setForeground(Color.BLACK);
         nspButton.setFont(normalFont);
         nspButton.setFocusPainted(false);
         nspButton.addActionListener(nspHandler);
@@ -211,7 +211,7 @@ public class Game {
         mmButtonPanel.setBackground(Color.GRAY);
         mmButton = new JButton("Main Menu");
         mmButton.setBackground(Color.DARK_GRAY);
-        mmButton.setForeground(Color.black);
+        mmButton.setForeground(Color.BLACK);
         mmButton.setFont(normalFont);
         mmButton.setFocusPainted(false);
         mmButton.addActionListener(mmHandler);
