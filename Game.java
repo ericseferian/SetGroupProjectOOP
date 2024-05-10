@@ -258,7 +258,7 @@ public class Game {
                 cardPanel.removeAll();
                 cardPanel.revalidate();
                 //deal 12 new cards from deck as arraylist
-                ArrayList<Card> newCards = board.getTwelveCardsFromDeck();
+                ArrayList<Card> newCards = board.getTwelveCardsFromDeck(board.getDeck());
                 for (Card card : newCards) {
 
                     JPanel cardRect = new JPanel();
@@ -282,7 +282,7 @@ public class Game {
                     cardPanel.removeAll();
                     cardPanel.revalidate();
 
-                    ArrayList<Card> newCards = board.getTwelveCardsFromDeck();
+                    ArrayList<Card> newCards = board.getTwelveCardsFromDeck(board.getDeck());
                     for (Card card : newCards) {
                         JPanel cardRect = new JPanel();
                         if (isEasy) addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);
@@ -336,7 +336,7 @@ public class Game {
                     cardPanel.removeAll();
                     cardPanel.revalidate();
 
-                    ArrayList<Card> newCards = board.getTwelveCardsFromDeck();
+                    ArrayList<Card> newCards = board.getTwelveCardsFromDeck(board.getDeck());
                     for (Card card : newCards) {
                         JPanel cardRect = new JPanel();
                         if (isEasy) addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);
@@ -384,8 +384,8 @@ public class Game {
                                 SwingUtilities.invokeLater(new Runnable() {
                                     @Override
                                     public void run() {
-                                            con.remove(setPresentPanel);
-                                            window.repaint();
+                                        con.remove(setPresentPanel);
+                                        window.repaint();
                                     }
                                 });
                             }
@@ -403,29 +403,29 @@ public class Game {
             createOutOfCardsScreen();
         }
         else {
-                cardPanel.removeAll();
-                cardPanel.revalidate();
+            cardPanel.removeAll();
+            cardPanel.revalidate();
 
-                //deal 12 new cards from deck as arraylist
-                ArrayList<Card> newCards = board.twoDArrayToList(board.getActiveCards());
-                for (Card card : newCards) {
+            //deal 12 new cards from deck as arraylist
+            ArrayList<Card> newCards = board.twoDArrayToList(board.getActiveCards());
+            for (Card card : newCards) {
 
-                    JPanel cardRect = new JPanel();
-                    if (isEasy) addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);
-                    if (isMedium || isHard) addMouseListenerToCardWithoutConfetti(cardRect, selectedCards, card);
-                    cardRect.setPreferredSize(new Dimension(300, 200));
-                    cardRect.setBackground(Color.DARK_GRAY);
+                JPanel cardRect = new JPanel();
+                if (isEasy) addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);
+                if (isMedium || isHard) addMouseListenerToCardWithoutConfetti(cardRect, selectedCards, card);
+                cardRect.setPreferredSize(new Dimension(300, 200));
+                cardRect.setBackground(Color.DARK_GRAY);
 
-                    ImageIcon cardImage = new ImageIcon(card.imagePath());
-                    JLabel cardLabel = new JLabel(cardImage);
-                    cardLabel.setBounds(0, 0, 500, 200);
+                ImageIcon cardImage = new ImageIcon(card.imagePath());
+                JLabel cardLabel = new JLabel(cardImage);
+                cardLabel.setBounds(0, 0, 500, 200);
 
-                    cardRect.add(cardLabel);
-                    cardPanel.add(cardRect);
+                cardRect.add(cardLabel);
+                cardPanel.add(cardRect);
 
-                }
-                cardPanel.repaint();
             }
+            cardPanel.repaint();
+        }
     }
 
 
@@ -1188,9 +1188,5 @@ public class Game {
         addKonamiKeyListener();
     }
 }
-
-
-
-
 
 
