@@ -68,6 +68,10 @@ public class Game {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.getContentPane().setBackground(Color.black);
         window.setLayout(null);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int centerX = (int) ((screenSize.getWidth() - window.getWidth()) / 2);
+        int centerY = (int) ((screenSize.getHeight() - window.getHeight()) / 2);
+        window.setLocation(centerX, centerY);
         con = window.getContentPane();
 
         //"SET"
