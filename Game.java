@@ -258,7 +258,7 @@ public class Game {
                 cardPanel.removeAll();
                 cardPanel.revalidate();
                 //deal 12 new cards from deck as arraylist
-                ArrayList<Card> newCards = board.getTwelveCardsFromDeck(board.getDeck());
+                ArrayList<Card> newCards = board.getTwelveCardsFromDeck();
                 for (Card card : newCards) {
 
                     JPanel cardRect = new JPanel();
@@ -282,7 +282,7 @@ public class Game {
                     cardPanel.removeAll();
                     cardPanel.revalidate();
 
-                    ArrayList<Card> newCards = board.getTwelveCardsFromDeck(board.getDeck());
+                    ArrayList<Card> newCards = board.getTwelveCardsFromDeck();
                     for (Card card : newCards) {
                         JPanel cardRect = new JPanel();
                         if (isEasy) addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);
@@ -336,7 +336,7 @@ public class Game {
                     cardPanel.removeAll();
                     cardPanel.revalidate();
 
-                    ArrayList<Card> newCards = board.getTwelveCardsFromDeck(board.getDeck());
+                    ArrayList<Card> newCards = board.getTwelveCardsFromDeck();
                     for (Card card : newCards) {
                         JPanel cardRect = new JPanel();
                         if (isEasy) addMouseListenerToCardWithConfetti(cardRect, selectedCards, card);

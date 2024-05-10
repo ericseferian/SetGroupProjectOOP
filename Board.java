@@ -250,7 +250,7 @@ public class Board {
         }
     }
 
-    public ArrayList<Card> getTwelveCardsFromDeck(ArrayList<Card> deck){
+    public ArrayList<Card> getTwelveCardsFromDeck(){
         ArrayList<Card> twelveNewCards = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             twelveNewCards.add(this.deck.removeFirst());
