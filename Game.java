@@ -303,7 +303,7 @@ public class Game {
                 else {
                     setPresentPanel = new JPanel();
                     setPresentPanel.setLayout(null);
-                    setPresentPanel.setBounds(625, 170, 250, 40);
+                    setPresentPanel.setBounds(625, 180, 250, 40);
                     setPresentPanel.setBackground(Color.DARK_GRAY);
 
                     JLabel spLabel = new JLabel("There Is a Set Present!");
@@ -321,6 +321,7 @@ public class Game {
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
+
 
                             con.remove(setPresentPanel);
                             window.repaint();
@@ -362,7 +363,7 @@ public class Game {
                         updatePointsLabel();
                         setPresentPanel = new JPanel();
                         setPresentPanel.setLayout(null);
-                        setPresentPanel.setBounds(625, 170, 250, 40);
+                        setPresentPanel.setBounds(625, 180, 250, 40);
                         setPresentPanel.setBackground(Color.DARK_GRAY);
 
                         JLabel spLabel = new JLabel("There Is a Set Present!");
@@ -375,9 +376,6 @@ public class Game {
 
                         window.repaint();
 
-                        if (timer != null) {
-                            timer.cancel();
-                        }
 
                         timer = new Timer();
                         timer.schedule(new TimerTask() {
@@ -386,8 +384,8 @@ public class Game {
                                 SwingUtilities.invokeLater(new Runnable() {
                                     @Override
                                     public void run() {
-                                        con.remove(setPresentPanel);
-                                        window.repaint();
+                                            con.remove(setPresentPanel);
+                                            window.repaint();
                                     }
                                 });
                             }
@@ -963,6 +961,21 @@ public class Game {
 
         public void actionPerformed(ActionEvent event){
             addTwelveNewCards();
+            nspButton.setEnabled(false);
+
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    // Re-enable the button after 1 second
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            nspButton.setEnabled(true);
+                        }
+                    });
+                }
+            }, 1000);
         }
     }
 
