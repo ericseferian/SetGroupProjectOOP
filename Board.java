@@ -120,11 +120,7 @@ public class Board {
             shapes.add(card.shape);
             shadings.add(card.shading);
         }
-        ///////
-        System.out.println(colors.toString());
-        System.out.println(numbers.toString());
-        System.out.println(shapes.toString());
-        System.out.println(shadings.toString());
+
 
 
         // Check if all attributes are different
@@ -162,7 +158,7 @@ public class Board {
                 (colors.size() == 1 && numbers.size() == 3 &&
                         shapes.size() == 1 && shadings.size() == 3) ||
                 (colors.size() == 1 && numbers.size() == 1 &&
-                shapes.size() == 3 && shadings.size() == 3);
+                        shapes.size() == 3 && shadings.size() == 3);
 
         return allDifferent || threeDifferentOneSame || threeSameOneDifferent || twoSameTwoDifferent;
     }
@@ -176,62 +172,25 @@ public class Board {
     //when a set is made, those cards should be removed and replaced.
     //if the board has greater than 12 cards, do nothing.
 
-
-    //why does the order change when a set is removed.
-    // replace the used cards at the same position they came from
-
-    //get the index of the cards being removed
-    //make a new arraylist of the removed cards and get their index
-    // add the new cards at the indicies of the removed cards
-
-    public void replaceUsedCards(Card[] cardsFromSet) {
+    public void replaceUsedCards(Card[] CardsFromSet) {
         if (boardWidth * BOARD_HEIGHT == 12) {
             Card[][] activeCards = getActiveCards();
             //flatten the 2D board array into a regular array of cards, and produce an arraylist
             ArrayList<Card> activeCardsArrayList = new ArrayList<Card>(Arrays.asList(cardSingleArray(activeCards)));
-
-            //removed cards arraylist
-            ArrayList<Card> removedCards = new ArrayList<Card>(Arrays.asList(cardsFromSet));
-
-            int [] removedCardIndices = new int[removedCards.size()];
-
-            //remove the cardsFromSet
-            //get indices of removed cards (this needs to come from activeCardsArrayList
-
-            for (int i = 0; i < cardsFromSet.length; i++) {
-
-                Card card = cardsFromSet[i];
-                int index = activeCardsArrayList.indexOf(card);
-
-                removedCardIndices[i] = index;
+            for (Card card : CardsFromSet) {
                 activeCardsArrayList.remove(card);
-
             }
-
-            //arraylist of new cards
-            //we need to add the new cards at the indices of the old cards
-            ArrayList<Card> newCards = new ArrayList<Card>(Arrays.asList(addNewCards(deck)));
-
-            for (int i = 0; i < newCards.size(); i++) {
-                if (removedCardIndices[i] < activeCardsArrayList.size()) {
-                    activeCardsArrayList.add(removedCardIndices[i], newCards.get(i));
-                }
-                else activeCardsArrayList.add(newCards.get(i));
-                }
-
-
             //add three new cards to replace
-//            activeCardsArrayList.addAll(Arrays.asList(addNewCards(deck)));
+            activeCardsArrayList.addAll(Arrays.asList(addNewCards(deck)));
             Card[][] newActiveCards = new Card[boardWidth][BOARD_HEIGHT];
             for (int i = 0; i < boardWidth; i++) {
                 for (int j = 0; j < BOARD_HEIGHT; j++) {
-
-                    //removeFirst to getFirst
                     newActiveCards[i][j] = activeCardsArrayList.removeFirst();
                 }
             }
             setActiveCards(newActiveCards);
         }
+
     }
 
     public Card[] addNewCards(ArrayList deck) {
@@ -249,8 +208,7 @@ public class Board {
             }
         }
     }
-
-    public ArrayList<Card> getTwelveCardsFromDeck(){
+    public ArrayList<Card> getTwelveCardsFromDeck(ArrayList<Card> deck){
         ArrayList<Card> twelveNewCards = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             twelveNewCards.add(this.deck.removeFirst());
@@ -259,4 +217,3 @@ public class Board {
         return  twelveNewCards;
     }
 }
-
