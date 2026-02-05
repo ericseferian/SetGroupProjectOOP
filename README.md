@@ -1,5 +1,6 @@
 # GroupProjectOOP
 
+How to use: Open and run the Game file.
 
 Author: Eric Seferian & Erwin K.
 Source: ChatGPT
